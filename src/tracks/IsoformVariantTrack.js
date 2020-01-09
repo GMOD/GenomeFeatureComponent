@@ -416,8 +416,6 @@ export default class IsoformVariantTrack {
                   // initially we do this for all of them, for both position and type
                   variantData.forEach(variant => {
                     let {type, fmax, fmin} = variant;
-                    let adjustedFmin = x(fmin);
-                    let adjustedFmax = x(fmax);
                     // we should ONLY ever find one or zero
                     let foundVariantBins = variantBins.filter( fb => {
                       const relativeMin = fb.fmin;
@@ -427,22 +425,22 @@ export default class IsoformVariantTrack {
                       if(fb.type !== type) return false ;
 
                       // if we overlap thAe min edge then take the minimum and whatever the maximum and add
-                      if(relativeMin <= adjustedFmin && relativeMax >= adjustedFmin){
+                      if(relativeMin <= fmin && relativeMax >= fmin){
                         return true ;
                       }
                       // if we overlap the max edge then take the maximum and whatever the maximum and add
-                      if(relativeMax <= adjustedFmax && relativeMax >= adjustedFmax){
+                      if(relativeMax <= fmax && relativeMax >= fmax){
                         return true ;
                       }
                       // if both are within the edges then just add it
-                      if(relativeMin >= adjustedFmin && relativeMax <= adjustedFmax){
+                      if(relativeMin >= fmin && relativeMax <= fmax){
                         return true ;
                       }
 
                       return false ;
                     });
                     if(foundVariantBins){
-                      console.log('foundFvaiant bins',foundVariantBins,adjustedFmin,adjustedFmax)
+                      console.log('foundFvaiant bins',foundVariantBins,fmin,fmax)
                     }
 
                     if(foundVariantBins && foundVariantBins.length > 0 ){
@@ -451,16 +449,14 @@ export default class IsoformVariantTrack {
                       foundBin.variants.push(variant);
                       // console.log(foundBin.fmin,adjustedFmin,x(variant.fmin))
                       // console.log(foundBin.fmax,adjustedFmax,x(variant.fmax))
-                      foundBin.fmin = Math.min(adjustedFmin,foundBin.fmin);
-                      foundBin.fmax = Math.max(adjustedFmax,foundBin.fmax);
+                      foundBin.fmin = Math.min(fmin,foundBin.fmin);
+                      foundBin.fmax = Math.max(fmax,foundBin.fmax);
                       // console.log('final',JSON.stringify([foundBin.fmin,foundBin.fmax]))
                       foundVariantBins[0] = foundBin;
                     }
                     else{
                       const newBin = {
-                        fmin: adjustedFmin,
-                        fmax: adjustedFmax,
-                        type,
+                        fmin, fmax, type,
                         variants: [variant]
                       };
                       variantBins.push( newBin);
