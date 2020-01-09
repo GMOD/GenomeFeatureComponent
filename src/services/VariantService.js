@@ -1,3 +1,4 @@
+import {getColorForConsequence} from "./ConsequenceService";
 
 export function getDescriptionDimensions(description){
   const descriptionHeight = Object.keys(description).length;
@@ -6,6 +7,29 @@ export function getDescriptionDimensions(description){
       return b[1].length - a[1].length;
     } )[0][1].length;
   return {descriptionWidth,descriptionHeight};
+}
+
+export function renderVariantDescriptions(descriptions){
+  if(descriptions.length===1){
+    return renderVariantDescription(descriptions[0]);
+  }
+  else
+  if(descriptions.length>1){
+    let stringBuffer = '<ul>';
+    for(let d of descriptions){
+      stringBuffer += `<li>${renderVariantDescription(d)}</li>`;
+    }
+
+    stringBuffer += '</ul>';
+    return stringBuffer;
+
+  }
+  else{
+    return 'No data available';
+  }
+
+
+  return returnString;
 }
 
 export function renderVariantDescription(description){
@@ -37,6 +61,35 @@ export function renderVariantDescription(description){
   return returnString;
 }
 
+export function getVariantDescriptions(variant){
+  return variant.variants.map( v => {
+    let description = getVariantDescription(v)
+    description.consequence = description.consequence ? description.consequence : 'UNKNOWN';
+    return description;
+  })
+}
+
+export function mergeConsequenceColors(colors){
+  return 'hotpink';
+  // return colors.map( d => {
+  //   return getColorForConsequence(d.consequence);
+  // })
+}
+
+export function getColorsForConsequences(descriptions){
+  return descriptions.map( d => {
+    return getColorForConsequence(d.consequence);
+  })
+}
+
+export function getConsequence(variant){
+  let consequence = 'UNKNOWN';
+  if(variant.geneLevelConsequence && variant.geneLevelConsequence.values && variant.geneLevelConsequence.values.length > 0){
+    consequence = (Array.isArray(variant.geneLevelConsequence.values) ? variant.geneLevelConsequence.values.join(' ') : variant.geneLevelConsequence.values).replace(/"/g,"");
+  }
+  return consequence;
+}
+
 /**
  * Returns an object
  * @param variant
@@ -49,10 +102,7 @@ export function getVariantDescription(variant){
   returnObject.symbol=variantSymbol ;
   returnObject.location = `${variant.seqId}:${variant.fmin}..${variant.fmax}`;
 
-  let consequence = 'UNKNOWN';
-  if(variant.geneLevelConsequence && variant.geneLevelConsequence.values && variant.geneLevelConsequence.values.length > 0){
-    consequence = (Array.isArray(variant.geneLevelConsequence.values) ? variant.geneLevelConsequence.values.join(' ') : variant.geneLevelConsequence.values).replace(/"/g,"");
-  }
+  let consequence = getConsequence(variant);
 
   returnObject.consequence =  consequence;
   returnObject.type =  variant.type;
@@ -60,18 +110,37 @@ export function getVariantDescription(variant){
 
   returnObject.description =  variant.description;
 
-  if(variant.allele_of_genes && variant.allele_of_genes.values.length>0){
-    returnObject.allele_of_genes =  (Array.isArray(variant.allele_of_genes.values) ? variant.allele_of_genes.values.join(' ') : variant.allele_of_genes.values).replace(/"/g,"");
+  if(variant.allele_of_genes){
+    if(variant.allele_of_genes.values && variant.allele_of_genes.values.length>0){
+      returnObject.allele_of_genes =  (Array.isArray(variant.allele_of_genes.values) ? variant.allele_of_genes.values.join(' ') : variant.allele_of_genes.values).replace(/"/g,"");
+    }
+    else{
+      returnObject.allele_of_genes =  variant.allele_of_genes;
+    }
   }
-  if(variant.alleles && variant.alleles.values.length>0){
-    returnObject.alleles =  (Array.isArray(variant.alleles.values) ? variant.alleles.values.join(' ') : variant.alleles.values).replace(/"/g,"");
+  if(variant.alleles){
+    if(variant.alleles.values &&  variant.alleles.values.length>0){
+      returnObject.alleles =  (Array.isArray(variant.alleles.values) ? variant.alleles.values.join(' ') : variant.alleles.values).replace(/"/g,"");
+    }
+    else{
+      returnObject.alleles =  variant.alleles;
+    }
   }
-  if(variant.alternative_alleles && variant.alternative_alleles.values.length>0){
-    returnObject.alternative_alleles =  (Array.isArray(variant.alternative_alleles.values) ? variant.alternative_alleles.values.join(' ') : variant.alternative_alleles.values).replace(/"/g,"")
+  if(variant.alternative_alleles){
+    if(variant.alternative_alleles.values  && variant.alternative_alleles.values.length>0){
+      returnObject.alternative_alleles =  (Array.isArray(variant.alternative_alleles.values) ? variant.alternative_alleles.values.join(' ') : variant.alternative_alleles.values).replace(/"/g,"")
+    }
+    else{
+      returnObject.alternative_alleles =  variant.alternative_alleles;
+    }
   }
-  if(variant.impact && variant.impact.values.length>0){
-    returnObject.impact = (Array.isArray(variant.impact.values) ?  variant.impact.values.join(' '): variant.impact.values).replace(/"/g,"")
-    // returnString += `impact: ${variant.impact.values}`;
+  if(variant.impact){
+    if(variant.impact.values   && variant.impact.values.length>0){
+      returnObject.impact = (Array.isArray(variant.impact.values) ?  variant.impact.values.join(' '): variant.impact.values).replace(/"/g,"")
+    }
+    else{
+      returnObject.impact = variant.impact;
+    }
   }
 
   return returnObject ;
@@ -79,7 +148,11 @@ export function getVariantDescription(variant){
 
 export function getVariantSymbol(variant){
   let symbol = variant.name ;
-  if(variant.symbol && variant.symbol.values.length>0){
+  if(variant.symbol && !variant.symbol.values){
+    symbol = variant.symbol;
+  }
+  else
+  if(variant.symbol && variant.symbol.values && variant.symbol.values.length>0){
     symbol = variant.symbol.values[0];
   }
   // return  (symbol.length>20 ? symbol.substr(0,20) : symbol).replace(/"/g,"");

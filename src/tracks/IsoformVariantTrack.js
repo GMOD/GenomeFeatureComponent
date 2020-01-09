@@ -1,9 +1,10 @@
 import * as d3 from "d3";
 import {calculateNewTrackPosition, checkSpace, findRange} from '../RenderFunctions';
 import {
-  getVariantDescription,
-  getVariantSymbol,
-  renderVariantDescription
+  getColorsForConsequences, getConsequence,
+  getVariantDescription, getVariantDescriptions,
+  getVariantSymbol, mergeConsequenceColors,
+  renderVariantDescription, renderVariantDescriptions
 } from "../services/VariantService";
 import {getColorForConsequence} from "../services/ConsequenceService";
 import {renderTrackDescription} from "../services/TrackService";
@@ -415,6 +416,7 @@ export default class IsoformVariantTrack {
                   // create variant bins for overlap over a single isoform
                   // initially we do this for all of them, for both position and type
                   variantData.forEach(variant => {
+                    let consequence = getConsequence(variant)
                     let {type, fmax, fmin} = variant;
                     // we should ONLY ever find one or zero
                     let foundVariantBins = variantBins.filter( fb => {
@@ -423,6 +425,7 @@ export default class IsoformVariantTrack {
 
                       // console.log(fb,adjustedFmin,adjustedFmax,type);
                       if(fb.type !== type) return false ;
+                      if(fb.consequence !== consequence ) return false ;
 
                       // if we overlap thAe min edge then take the minimum and whatever the maximum and add
                       if(relativeMin <= fmin && relativeMax >= fmin){
@@ -439,9 +442,6 @@ export default class IsoformVariantTrack {
 
                       return false ;
                     });
-                    if(foundVariantBins){
-                      console.log('foundFvaiant bins',foundVariantBins,fmin,fmax)
-                    }
 
                     if(foundVariantBins && foundVariantBins.length > 0 ){
                       // add variant to this bin and adust the min and max
@@ -456,7 +456,7 @@ export default class IsoformVariantTrack {
                     }
                     else{
                       const newBin = {
-                        fmin, fmax, type,
+                        fmin, fmax, type, consequence,
                         variants: [variant]
                       };
                       variantBins.push( newBin);
@@ -467,21 +467,20 @@ export default class IsoformVariantTrack {
                   });
 
                   // 12 if all have 1
-                  console.log('variant bins, ',variantBins)
-
-                  variantData.forEach(variant => {
+                  // console.log('variant bins, ',variantBins)
+                  variantBins.forEach(variant => {
                     let {type, fmax, fmin} = variant;
-                    console.log('regular data, ',x(fmin),x(fmax),type)
+                    // console.log('regular data, ',x(fmin),x(fmax),type)
                     if (
                       (fmin < innerChild.fmin && fmax > innerChild.fmin)
                       || (fmax > innerChild.fmax && fmin < innerChild.fmax)
                       || (fmax <= innerChild.fmax && fmin >= innerChild.fmin)
                     ) {
                       let drawnVariant = true;
-                      const description = getVariantDescription(variant);
-                      const consequence = description.consequence ? description.consequence : "UNKNOWN";
-                      const consequenceColor = getColorForConsequence(consequence);
-                      let descriptionHtml = renderVariantDescription(description);
+                      const descriptions = getVariantDescriptions(variant);
+                      // const consequence = description.consequence ? description.consequence : "UNKNOWN";
+                      const consequenceColor = getColorsForConsequences(descriptions)[0];
+                      let descriptionHtml = renderVariantDescriptions(descriptions);
                       // console.log('type type',type,`${variant.seqId}:${variant.fmin}..${variant.fmax}`,`${x(fmax)},${x(fmin)}`);
                       if (type.toLowerCase() === 'deletion' || type.toLowerCase() === 'mnv') {
                         isoform.append('rect')
