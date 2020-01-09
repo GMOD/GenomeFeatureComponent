@@ -537,6 +537,22 @@ export default class IsoformVariantTrack {
                           .attr('height', isoform_title_height)
                           .attr("transform", `translate(${x(fmin-(symbol_string_length/2.0*100))},${(variant_offset*2.2)- transcript_backbone_height})`)
                           .html(symbol_string)
+                          .on("click", d => {
+                            tooltipDiv.transition()
+                              .duration(200)
+                              .style("width", 'auto')
+                              .style("height", 'auto')
+                              .style("opacity", .9);
+                            tooltipDiv.html(descriptionHtml)
+                              .style("left", (d3.event.pageX+10) + "px")
+                              .style("top", (d3.event.pageY +10) + "px")
+                              .append('button')
+                              .attr("type","button")
+                              .text('Close')
+                              .on('click', d => closeToolTip())
+                            ;
+
+                          })
                           .datum({fmin: featureChild.fmin});
                       }
                   }
