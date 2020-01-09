@@ -410,8 +410,72 @@ export default class IsoformVariantTrack {
                     .datum({fmin: innerChild.fmin, fmax: innerChild.fmax});
                 }
                 if (validInnerType) {
+
+                  let variantBins = [];
+                  // create variant bins for overlap over a single isoform
+                  // initially we do this for all of them, for both position and type
                   variantData.forEach(variant => {
                     let {type, fmax, fmin} = variant;
+                    let adjustedFmin = x(fmin);
+                    let adjustedFmax = x(fmax);
+                    // we should ONLY ever find one or zero
+                    let foundVariantBins = variantBins.filter( fb => {
+                      const relativeMin = fb.fmin;
+                      const relativeMax = fb.fmax;
+
+                      // console.log(fb,adjustedFmin,adjustedFmax,type);
+                      if(fb.type !== type) return false ;
+
+                      // if we overlap thAe min edge then take the minimum and whatever the maximum and add
+                      if(relativeMin <= adjustedFmin && relativeMax >= adjustedFmin){
+                        return true ;
+                      }
+                      // if we overlap the max edge then take the maximum and whatever the maximum and add
+                      if(relativeMax <= adjustedFmax && relativeMax >= adjustedFmax){
+                        return true ;
+                      }
+                      // if both are within the edges then just add it
+                      if(relativeMin >= adjustedFmin && relativeMax <= adjustedFmax){
+                        return true ;
+                      }
+
+                      return false ;
+                    });
+                    if(foundVariantBins){
+                      console.log('foundFvaiant bins',foundVariantBins,adjustedFmin,adjustedFmax)
+                    }
+
+                    if(foundVariantBins && foundVariantBins.length > 0 ){
+                      // add variant to this bin and adust the min and max
+                      let foundBin = foundVariantBins[0];
+                      foundBin.variants.push(variant);
+                      // console.log(foundBin.fmin,adjustedFmin,x(variant.fmin))
+                      // console.log(foundBin.fmax,adjustedFmax,x(variant.fmax))
+                      foundBin.fmin = Math.min(adjustedFmin,foundBin.fmin);
+                      foundBin.fmax = Math.max(adjustedFmax,foundBin.fmax);
+                      // console.log('final',JSON.stringify([foundBin.fmin,foundBin.fmax]))
+                      foundVariantBins[0] = foundBin;
+                    }
+                    else{
+                      const newBin = {
+                        fmin: adjustedFmin,
+                        fmax: adjustedFmax,
+                        type,
+                        variants: [variant]
+                      };
+                      variantBins.push( newBin);
+                      // console.log('pushed! ',JSON.stringify(variantBins.length))
+                    }
+                    // console.log('pushing ',JSON.stringify(foundVariantBins[0]),'into ',JSON.stringify(variantBins));
+                    // console.log('result',JSON.stringify(variantBins),variantBins.length);
+                  });
+
+                  // 12 if all have 1
+                  console.log('variant bins, ',variantBins)
+
+                  variantData.forEach(variant => {
+                    let {type, fmax, fmin} = variant;
+                    console.log('regular data, ',x(fmin),x(fmax),type)
                     if (
                       (fmin < innerChild.fmin && fmax > innerChild.fmin)
                       || (fmax > innerChild.fmax && fmin < innerChild.fmax)
@@ -422,6 +486,7 @@ export default class IsoformVariantTrack {
                       const consequence = description.consequence ? description.consequence : "UNKNOWN";
                       const consequenceColor = getColorForConsequence(consequence);
                       let descriptionHtml = renderVariantDescription(description);
+                      // console.log('type type',type,`${variant.seqId}:${variant.fmin}..${variant.fmax}`,`${x(fmax)},${x(fmin)}`);
                       if (type.toLowerCase() === 'deletion' || type.toLowerCase() === 'mnv') {
                         isoform.append('rect')
                           .attr('class', 'variant-deletion')
