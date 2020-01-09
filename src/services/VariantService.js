@@ -82,5 +82,6 @@ export function getVariantSymbol(variant){
   if(variant.symbol && variant.symbol.values.length>0){
     symbol = variant.symbol.values[0];
   }
-  return  (symbol.length>20 ? symbol.substr(0,20) : symbol).replace(/"/g,"");
+  // return  (symbol.length>20 ? symbol.substr(0,20) : symbol).replace(/"/g,"");
+  return symbol.replace(/"/g,"");
 }

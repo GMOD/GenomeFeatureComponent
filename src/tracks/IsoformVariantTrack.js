@@ -159,7 +159,7 @@ export default class IsoformVariantTrack {
                 geneList[feature.name] = 'Green';
               }
 
-              console.log(featureChild)
+              // console.log(featureChild)
 
               let isoform = track.append("g").attr("class", "isoform")
                 .attr("transform", "translate(0," + ((row_count * isoform_height) + 10 + heightBuffer) + ")")
@@ -167,7 +167,7 @@ export default class IsoformVariantTrack {
 
               if(addingGeneLabel){
                 text_string = feature.name;
-                console.log('feature',feature)
+                // console.log('feature',feature)
                 text_label = isoform.append('text')
                   .attr('class', 'geneLabel')
                   .attr('fill', selected ? 'sandybrown' : 'black')
@@ -430,7 +430,7 @@ export default class IsoformVariantTrack {
                           .attr('z-index', 30)
                           .attr('fill', consequenceColor)
                           .attr('height', variant_height)
-                          .attr('width', x(fmax) - x(fmin))
+                          .attr('width', Math.ceil(x(fmax)-x(fmin)))
                           .on("click", d => {
                             tooltipDiv.transition()
                               .duration(200)
@@ -536,7 +536,7 @@ export default class IsoformVariantTrack {
                           .attr('opacity', selected ? 1 : 0.5)
                           .attr('height', isoform_title_height)
                           .attr("transform", `translate(${x(fmin-(symbol_string_length/2.0*100))},${(variant_offset*2.2)- transcript_backbone_height})`)
-                          .text(symbol_string)
+                          .html(symbol_string)
                           .datum({fmin: featureChild.fmin});
                       }
                   }
