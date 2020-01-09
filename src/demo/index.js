@@ -14,13 +14,13 @@ ratExamples();
 mouseExamples();
 flyExamples();
 
-function createExample(isoformDataFunction,variantDataFunction,divId){
+function createExample(isoformDataFunction,variantDataFunction,divId,showLabel){
   let configGlobal1 = {
     "locale": "global",
     "chromosome": '2L',
     "start": 132412,
     "end": 230018,
-    "showVariantLabel":true ,
+    "showVariantLabel":showLabel ,
     "tracks": [
       {
         "id": 12,
@@ -50,29 +50,36 @@ function flyExamples(){
   // 2L:132412..230018
 // http://localhost:8080/apollo/vcf/remotefly/Phenotypic%20Variants/2L:132412..230018.json?includeGenotypes=false&ignoreCache=true
 // http://localhost:8080/apollo/track/remotefly/All%20Genes/2L:132412..230018.json?includeGenotypes=false&ignoreCache=true
-  createExample(fakeAgrDataService.GetFakeFlyGeneExample1(),fakeAgrDataService.GetFakeFlyVariantExample1(),"viewerFlyExample1");
-  createExample(fakeAgrDataService.GetFakeFlyGeneExample2(),fakeAgrDataService.GetFakeFlyVariantExample2(),"viewerFlyExample2");
+  createExample(fakeAgrDataService.GetFakeFlyGeneExample1(),fakeAgrDataService.GetFakeFlyVariantExample1(),"viewerFlyExample1",true);
+  createExample(fakeAgrDataService.GetFakeFlyGeneExample2(),fakeAgrDataService.GetFakeFlyVariantExample2(),"viewerFlyExample2",true);
+  createExample(fakeAgrDataService.GetFakeFlyGeneExample1(),fakeAgrDataService.GetFakeFlyVariantExample1(),"viewerFlyExample1NoLabel",false);
+  createExample(fakeAgrDataService.GetFakeFlyGeneExample2(),fakeAgrDataService.GetFakeFlyVariantExample2(),"viewerFlyExample2NoLabel",false);
 }
 
 function ratExamples(){
   // http://localhost:8080/apollo/vcf/remotemouse/Phenotypic%20Variants/6:113619452..113636198.json?includeGenotypes=false&ignoreCache=true
   // http://localhost:8080/apollo/track/remotemouse/All%20Genes/6:113619452..113636198.json?includeGenotypes=false&ignoreCache=true  let configGlobal1 = {
-  createExample(fakeAgrDataService.GetFakeRatGeneExample1(),fakeAgrDataService.GetFakeRatVariantExample1(),"viewerRatExample1");
+  createExample(fakeAgrDataService.GetFakeRatGeneExample1(),fakeAgrDataService.GetFakeRatVariantExample1(),"viewerRatExample1",true);
+  createExample(fakeAgrDataService.GetFakeRatGeneExample1(),fakeAgrDataService.GetFakeRatVariantExample1(),"viewerRatExample1NoLabel",false);
 }
 function mouseExamples(){
   // http://localhost:8080/apollo/vcf/remotemouse/Phenotypic%20Variants/6:113619452..113636198.json?includeGenotypes=false&ignoreCache=true
   // http://localhost:8080/apollo/track/remotemouse/All%20Genes/6:113619452..113636198.json?includeGenotypes=false&ignoreCache=true  let configGlobal1 = {
-  createExample(fakeAgrDataService.GetFakeMouseGeneExample1(),fakeAgrDataService.GetFakeMouseVariantExample1(),"viewerMouseExample1");
+  createExample(fakeAgrDataService.GetFakeMouseGeneExample1(),fakeAgrDataService.GetFakeMouseVariantExample1(),"viewerMouseExample1",true);
+  createExample(fakeAgrDataService.GetFakeMouseGeneExample1(),fakeAgrDataService.GetFakeMouseVariantExample1(),"viewerMouseExample1NoLabel",false);
 }
 
 function fishExamples(){
-  createExample(fakeAgrDataService.GetFakeFishGeneDataLbx2(),fakeAgrDataService.GetFakeFishVariantDataLbx2(),"viewerFishLbx2");
-  createExample(fakeAgrDataService.GetFakeFishGeneDataMyl7(),fakeAgrDataService.GetFakeFishVariantDataMyl7(),"viewerFishMyl7");
+  createExample(fakeAgrDataService.GetFakeFishGeneDataLbx2(),fakeAgrDataService.GetFakeFishVariantDataLbx2(),"viewerFishLbx2",true);
+  createExample(fakeAgrDataService.GetFakeFishGeneDataMyl7(),fakeAgrDataService.GetFakeFishVariantDataMyl7(),"viewerFishMyl7",true);
+  createExample(fakeAgrDataService.GetFakeFishGeneDataLbx2(),fakeAgrDataService.GetFakeFishVariantDataLbx2(),"viewerFishLbx2NoLabel",false);
+  createExample(fakeAgrDataService.GetFakeFishGeneDataMyl7(),fakeAgrDataService.GetFakeFishVariantDataMyl7(),"viewerFishMyl7NoLabel",false);
 }
 
 
 function wormExamples(){
-  createExample(fakeAgrDataService.GetFakeWormGeneDataEgl8(),fakeAgrDataService.GetFakeWormVariantDataEgl8(),"viewerWormEgl8");
+  createExample(fakeAgrDataService.GetFakeWormGeneDataEgl8(),fakeAgrDataService.GetFakeWormVariantDataEgl8(),"viewerWormEgl8",true);
+  createExample(fakeAgrDataService.GetFakeWormGeneDataEgl8(),fakeAgrDataService.GetFakeWormVariantDataEgl8(),"viewerWormEgl8NoLabel",false);
 }
 
 
