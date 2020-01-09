@@ -147,6 +147,9 @@ export function getVariantDescription(variant){
 }
 
 export function getVariantSymbol(variant){
+  if(variant.variants){
+    return variant.variants.length;
+  }
   let symbol = variant.name ;
   if(variant.symbol && !variant.symbol.values){
     symbol = variant.symbol;

@@ -589,7 +589,8 @@ export default class IsoformVariantTrack {
                       }
                       if(drawnVariant && showVariantLabel){
                         let symbol_string = getVariantSymbol(variant);
-                        const symbol_string_length = symbol_string.length;
+                        const symbol_string_length = symbol_string.length ? symbol_string.length : 1;
+                        console.log('symbold string',symbol_string,symbol_string_length,fmin)
                         isoform.append('text')
                           .attr('class', 'variantLabel')
                           .attr('fill', selected ? 'sandybrown' : consequenceColor)
