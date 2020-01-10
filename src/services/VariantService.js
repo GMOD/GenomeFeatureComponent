@@ -148,7 +148,12 @@ export function getVariantDescription(variant){
 
 export function getVariantSymbol(variant){
   if(variant.variants){
-    return variant.variants.length;
+    if(variant.variants.length!==1){
+      return variant.variants.length;
+    }
+    else{
+      return getVariantSymbol(variant.variants[0]);
+    }
   }
   let symbol = variant.name ;
   if(variant.symbol && !variant.symbol.values){
