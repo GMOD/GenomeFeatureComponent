@@ -44,33 +44,36 @@ export default class IsoformVariantTrack {
 
     let view_start = dataRange.fmin;
     let view_end = dataRange.fmax;
-    let exon_height = 10; // will be white / transparent
-    let cds_height = 10; // will be colored in
-    let isoform_height = 40; // height for each isoform
-    const geneLabelHeight = 20 ;
-    let isoform_title_height = 0; // height for each isoform
-    let utr_height = 10; // this is the height of the isoform running all of the way through
-    let variant_height = 10; // this is the height of the isoform running all of the way through
-    let variant_offset = 20; // this is the height of the isoform running all of the way through
-    let transcript_backbone_height = 4; // this is the height of the isoform running all of the way through
-    let arrow_height = 20;
-    let arrow_width = 10;
-    let arrow_points = '0,0 0,' + arrow_height + ' ' + arrow_width + ',' + arrow_width;
-    let snv_height = 10;
-    let snv_width = 10;
+
+    // constants
+    const EXON_HEIGHT = 10; // will be white / transparent
+    const CDS_HEIGHT = 10; // will be colored in
+    const ISOFORM_HEIGHT = 40; // height for each isoform
+    const GENE_LABEL_HEIGHT = 20 ;
+    const MIN_WIDTH = 2;
+    const ISOFORM_TITLE_HEIGHT = 0; // height for each isoform
+    const UTR_HEIGHT = 10; // this is the height of the isoform running all of the way through
+    const VARIANT_HEIGHT = 10; // this is the height of the isoform running all of the way through
+    const VARIANT_OFFSET = 20; // this is the height of the isoform running all of the way through
+    const TRANSCRIPT_BACKBONE_HEIGHT = 4; // this is the height of the isoform running all of the way through
+    const ARROW_HEIGHT = 20;
+    const ARROW_WIDTH = 10;
+    const ARROW_POINTS = '0,0 0,' + ARROW_HEIGHT + ' ' + ARROW_WIDTH + ',' + ARROW_WIDTH;
+    const SNV_HEIGHT = 10;
+    const SNV_WIDTH = 10;
 
     const insertion_points = (x) => {
-      return `${x-(snv_width/2.0)},${snv_height} ${x},0 ${x+(snv_width/2.0)},${snv_height}`;
+      return `${x-(SNV_WIDTH/2.0)},${SNV_HEIGHT} ${x},0 ${x+(SNV_WIDTH/2.0)},${SNV_HEIGHT}`;
     };
 
     const delins_points = (x) => {
       // const delins_strings = `${x-(snv_width/2.0)},${snv_height} ${x},0 ${x+(snv_width/2.0)},${snv_height}`;
-      const delins_strings = `${x-(snv_width/2.0)},${snv_height} ${x+(snv_width/2.0)},${snv_height} ${x-(snv_width/2.0)},${0} ${x+(snv_width/2.0)},${0}`;
+      const delins_strings = `${x-(SNV_WIDTH/2.0)},${SNV_HEIGHT} ${x+(SNV_WIDTH/2.0)},${SNV_HEIGHT} ${x-(SNV_WIDTH/2.0)},${0} ${x+(SNV_WIDTH/2.0)},${0}`;
       return delins_strings;
     };
 
     const snv_points = (x) => {
-      return `${x},${snv_height} ${x+(snv_width/2.0)},${snv_height/2.0} ${x},${0} ${x-(snv_width/2.0)},${snv_height/2.0}`;
+      return `${x},${SNV_HEIGHT} ${x+(SNV_WIDTH/2.0)},${SNV_HEIGHT/2.0} ${x},${0} ${x-(SNV_WIDTH/2.0)},${SNV_HEIGHT/2.0}`;
     };
 
     let x = d3.scaleLinear()
@@ -155,7 +158,7 @@ export default class IsoformVariantTrack {
               let text_string, text_label;
               let addingGeneLabel = false ;
               if(Object.keys(geneList).indexOf(feature.name)<0) {
-                heightBuffer += geneLabelHeight ;
+                heightBuffer += GENE_LABEL_HEIGHT ;
                 addingGeneLabel = true ;
                 geneList[feature.name] = 'Green';
               }
@@ -163,7 +166,7 @@ export default class IsoformVariantTrack {
               // console.log(featureChild)
 
               let isoform = track.append("g").attr("class", "isoform")
-                .attr("transform", "translate(0," + ((row_count * isoform_height) + 10 + heightBuffer) + ")")
+                .attr("transform", "translate(0," + ((row_count * ISOFORM_HEIGHT) + 10 + heightBuffer) + ")")
               ;
 
               if(addingGeneLabel){
@@ -172,8 +175,8 @@ export default class IsoformVariantTrack {
                 text_label = isoform.append('text')
                   .attr('class', 'geneLabel')
                   .attr('fill', selected ? 'sandybrown' : 'black')
-                  .attr('height', isoform_title_height)
-                  .attr("transform", "translate(" + x(featureChild.fmin) + `,-${geneLabelHeight})`)
+                  .attr('height', ISOFORM_TITLE_HEIGHT)
+                  .attr("transform", "translate(" + x(featureChild.fmin) + `,-${GENE_LABEL_HEIGHT})`)
                   .text(text_string)
                   .on("click", d => {
                     tooltipDiv.transition()
@@ -197,12 +200,12 @@ export default class IsoformVariantTrack {
                   return {fmin: featureChild.fmin, fmax: featureChild.fmax, strand: feature.strand};
                 })
                 .attr('class', 'transArrow')
-                .attr('points', arrow_points)
+                .attr('points', ARROW_POINTS)
                 .attr('transform', function (d) {
                   if (feature.strand > 0) {
                     return 'translate(' + Number(x(d.fmax)) + ',0)';
                   } else {
-                    return 'translate(' + Number(x(d.fmin)) + ',' + arrow_height + ') rotate(180)';
+                    return 'translate(' + Number(x(d.fmin)) + ',' + ARROW_HEIGHT + ') rotate(180)';
                   }
                 })
                 .on("click", d => {
@@ -223,8 +226,8 @@ export default class IsoformVariantTrack {
 
               isoform.append('rect')
                 .attr('class', 'transcriptBackbone')
-                .attr('y', 10 + isoform_title_height)
-                .attr('height', transcript_backbone_height)
+                .attr('y', 10 + ISOFORM_TITLE_HEIGHT)
+                .attr('height', TRANSCRIPT_BACKBONE_HEIGHT)
                 .attr("transform", "translate(" + x(featureChild.fmin) + ",0)")
                 .attr('width', x(featureChild.fmax) - x(featureChild.fmin))
                 .on("click", d => {
@@ -248,7 +251,7 @@ export default class IsoformVariantTrack {
                 .attr('class', 'transcriptLabel')
                 .attr('fill', selected ? 'sandybrown' : 'gray')
                 .attr('opacity', selected ? 1 : 0.5)
-                .attr('height', isoform_title_height)
+                .attr('height', ISOFORM_TITLE_HEIGHT)
                 .attr("transform", "translate(" + x(featureChild.fmin) + ",0)")
                 .text(text_string)
                 .on("click", d => {
@@ -342,8 +345,8 @@ export default class IsoformVariantTrack {
                   isoform.append('rect')
                     .attr('class', 'exon')
                     .attr('x', x(innerChild.fmin))
-                    .attr('transform', 'translate(0,' + (exon_height - transcript_backbone_height) + ')')
-                    .attr('height', exon_height)
+                    .attr('transform', 'translate(0,' + (EXON_HEIGHT - TRANSCRIPT_BACKBONE_HEIGHT) + ')')
+                    .attr('height', EXON_HEIGHT)
                     .attr('z-index', 10)
                     .attr('width', x(innerChild.fmax) - x(innerChild.fmin))
                     .on("click", d => {
@@ -366,9 +369,9 @@ export default class IsoformVariantTrack {
                   isoform.append('rect')
                     .attr('class', 'CDS')
                     .attr('x', x(innerChild.fmin))
-                    .attr('transform', 'translate(0,' + (cds_height - transcript_backbone_height) + ')')
+                    .attr('transform', 'translate(0,' + (CDS_HEIGHT - TRANSCRIPT_BACKBONE_HEIGHT) + ')')
                     .attr('z-index', 20)
-                    .attr('height', cds_height)
+                    .attr('height', CDS_HEIGHT)
                     .attr('width', x(innerChild.fmax) - x(innerChild.fmin))
                     .on("click", d => {
                       tooltipDiv.transition()
@@ -390,9 +393,9 @@ export default class IsoformVariantTrack {
                   isoform.append('rect')
                     .attr('class', 'UTR')
                     .attr('x', x(innerChild.fmin))
-                    .attr('transform', 'translate(0,' + (utr_height - transcript_backbone_height) + ')')
+                    .attr('transform', 'translate(0,' + (UTR_HEIGHT - TRANSCRIPT_BACKBONE_HEIGHT) + ')')
                     .attr('z-index', 20)
-                    .attr('height', utr_height)
+                    .attr('height', UTR_HEIGHT)
                     .attr('width', x(innerChild.fmax) - x(innerChild.fmin))
                     .on("click", d => {
                       tooltipDiv.transition()
@@ -481,16 +484,17 @@ export default class IsoformVariantTrack {
                       // const consequence = description.consequence ? description.consequence : "UNKNOWN";
                       const consequenceColor = getColorsForConsequences(descriptions)[0];
                       let descriptionHtml = renderVariantDescriptions(descriptions);
+                      const width = Math.ceil(x(fmax)-x(fmin)) < MIN_WIDTH ? MIN_WIDTH : Math.ceil(x(fmax)-x(fmin));
                       // console.log('type type',type,`${variant.seqId}:${variant.fmin}..${variant.fmax}`,`${x(fmax)},${x(fmin)}`);
                       if (type.toLowerCase() === 'deletion' || type.toLowerCase() === 'mnv') {
                         isoform.append('rect')
                           .attr('class', 'variant-deletion')
                           .attr('x', x(fmin))
-                          .attr('transform', 'translate(0,' + (variant_offset - transcript_backbone_height) + ')')
+                          .attr('transform', 'translate(0,' + (VARIANT_OFFSET - TRANSCRIPT_BACKBONE_HEIGHT) + ')')
                           .attr('z-index', 30)
                           .attr('fill', consequenceColor)
-                          .attr('height', variant_height)
-                          .attr('width', Math.ceil(x(fmax)-x(fmin)))
+                          .attr('height', VARIANT_HEIGHT)
+                          .attr('width', width)
                           .on("click", d => {
                             tooltipDiv.transition()
                               .duration(200)
@@ -514,7 +518,7 @@ export default class IsoformVariantTrack {
                           .attr('points', snv_points(x(fmin)))
                           .attr('fill', consequenceColor)
                           .attr('x', x(fmin))
-                          .attr('transform', 'translate(0,' + (variant_offset - transcript_backbone_height) + ')')
+                          .attr('transform', 'translate(0,' + (VARIANT_OFFSET - TRANSCRIPT_BACKBONE_HEIGHT) + ')')
                           .attr('z-index', 30)
                           .on("click", d => {
                             tooltipDiv.transition()
@@ -538,7 +542,7 @@ export default class IsoformVariantTrack {
                           .attr('points', insertion_points(x(fmin)))
                           .attr('fill', consequenceColor)
                           .attr('x', x(fmin))
-                          .attr('transform', 'translate(0,' + (variant_offset - transcript_backbone_height) + ')')
+                          .attr('transform', 'translate(0,' + (VARIANT_OFFSET - TRANSCRIPT_BACKBONE_HEIGHT) + ')')
                           .attr('z-index', 30)
                           .on("click", d => {
                             tooltipDiv.transition()
@@ -564,7 +568,7 @@ export default class IsoformVariantTrack {
                           .attr('class', 'variant-delins')
                           .attr('points', delins_points(x(fmin)))
                           .attr('x', x(fmin))
-                          .attr('transform', 'translate(0,' + (variant_offset - transcript_backbone_height) + ')')
+                          .attr('transform', 'translate(0,' + (VARIANT_OFFSET - TRANSCRIPT_BACKBONE_HEIGHT) + ')')
                           .attr('fill', consequenceColor)
                           .attr('z-index', 30)
                           .on("click", d => {
@@ -595,8 +599,8 @@ export default class IsoformVariantTrack {
                           .attr('class', 'variantLabel')
                           .attr('fill', selected ? 'sandybrown' : consequenceColor)
                           .attr('opacity', selected ? 1 : 0.5)
-                          .attr('height', isoform_title_height)
-                          .attr("transform", `translate(${x(fmin-(symbol_string_length/2.0*100))},${(variant_offset*2.2)- transcript_backbone_height})`)
+                          .attr('height', ISOFORM_TITLE_HEIGHT)
+                          .attr("transform", `translate(${x(fmin-(symbol_string_length/2.0*100))},${(VARIANT_OFFSET*2.2)- TRANSCRIPT_BACKBONE_HEIGHT})`)
                           .html(symbol_string)
                           .on("click", d => {
                             tooltipDiv.transition()
@@ -635,10 +639,10 @@ export default class IsoformVariantTrack {
                 .append('text')
                 .attr('x', 10)
                 .attr('y', 10)
-                .attr("transform", "translate(0," + ((row_count * isoform_height) + 20 +heightBuffer) + ")")
+                .attr("transform", "translate(0," + ((row_count * ISOFORM_HEIGHT) + 20 +heightBuffer) + ")")
                 .attr('fill', 'red')
                 .attr('opacity', 1)
-                .attr('height', isoform_title_height)
+                .attr('height', ISOFORM_TITLE_HEIGHT)
                 .text('Maximum features displayed.  See full view for more.');
             }
           }
@@ -650,13 +654,13 @@ export default class IsoformVariantTrack {
     if (row_count === 0) {
       track.append('text')
         .attr('x', 30)
-        .attr('y', isoform_title_height + 10)
+        .attr('y', ISOFORM_TITLE_HEIGHT + 10)
         .attr('fill', 'orange')
         .attr('opacity', 0.6)
         .text('Overview of non-coding genome features unavailable at this time.');
     }
     // we return the appropriate height function
-    return (row_count * isoform_height) + heightBuffer;
+    return (row_count * ISOFORM_HEIGHT) + heightBuffer;
   }
 
   async populateTrack(track,geneCallbackFunction,variantCallbackFunction) {
