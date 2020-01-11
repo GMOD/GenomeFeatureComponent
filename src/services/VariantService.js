@@ -15,9 +15,9 @@ export function renderVariantDescriptions(descriptions){
   }
   else
   if(descriptions.length>1){
-    let stringBuffer = '<ul>';
+    let stringBuffer = '<ul style="list-style-type: none;">';
     for(let d of descriptions){
-      stringBuffer += `<li>${renderVariantDescription(d)}</li>`;
+      stringBuffer += `<li style="border-bottom: solid 1px black;">${renderVariantDescription(d)}</li>`;
     }
 
     stringBuffer += '</ul>';
