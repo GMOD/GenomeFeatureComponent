@@ -347,7 +347,7 @@ export default class IsoformVariantTrack {
                     let consequence = getConsequence(variant);
                     let {type, fmax, fmin} = variant;
                     // we should ONLY ever find one or zero
-                    let foundVariantBins = variantBins.filter( fb => {
+                    let foundVariantBinIndex = variantBins.findIndex( fb => {
                       const relativeMin = fb.fmin;
                       const relativeMax = fb.fmax;
 
@@ -371,19 +371,25 @@ export default class IsoformVariantTrack {
                       return false ;
                     });
 
-                    if(foundVariantBins && foundVariantBins.length > 0 ){
+                    if(foundVariantBinIndex >=0 ){
                       // add variant to this bin and adust the min and max
-                      let foundBin = foundVariantBins[0];
-                      let foundMatchingVariantSet = foundVariantBins.variantSet ? foundVariantBins.variantSet.filter( b => b.type === type && b.consequence === consequence) : undefined;
-                      if(foundMatchingVariantSet){
-                        foundMatchingVariantSet.variants.push(variant);
+                      let foundBin = variantBins[foundVariantBinIndex];
+                      console.log('found',variantBins[foundVariantBinIndex]);
+                      const foundMatchingVariantSetIndex = variantBins[foundVariantBinIndex].variantSet ? variantBins[foundVariantBinIndex].variantSet.findIndex( b => b.type === type && b.consequence === consequence) : -1 ;
+                      if(foundMatchingVariantSetIndex>=0){
+                        // console.log('found  and adding to ',foundVariantBinIndex[foundMatchingVariantSet].variantSet)
+                        // foundVariantBinIndex[foundMatchingVariantSet].variantSet.push(variant);
+                        variantBins[foundMatchingVariantSetIndex].variantSet.push(variant);
+                        // console.log('pushed found adding to ',foundVariantBinIndex[foundMatchingVariantSet].variantSet)
+                        // foundMatchingVariantSet.variants.push(variant);
                       }
                       else{
-                        foundVariantBins.variantSet = {
+                        console.log('found for other ',foundVariantBinIndex,variant)
+                        variantBins[foundVariantBinIndex].variantSet = [{
                           variants: [variant],
                           type,
                           consequence,
-                        }
+                        }];
                       }
 
                       foundBin.variants.push(variant);
@@ -392,16 +398,16 @@ export default class IsoformVariantTrack {
                       foundBin.fmin = Math.min(fmin,foundBin.fmin);
                       foundBin.fmax = Math.max(fmax,foundBin.fmax);
                       // console.log('final',JSON.stringify([foundBin.fmin,foundBin.fmax]))
-                      foundVariantBins[0] = foundBin;
+                      variantBins[foundVariantBinIndex] = foundBin;
                     }
                     else{
                       const newBin = {
                         fmin, fmax, type, consequence,
-                        variantSet: {
+                        variantSet: [{
                           variants:[variant],
                           type,
                           consequence
-                        },
+                        }],
                         variants: [variant]
                       };
                       variantBins.push( newBin);
