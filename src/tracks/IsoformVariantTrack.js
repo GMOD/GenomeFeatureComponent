@@ -344,7 +344,7 @@ export default class IsoformVariantTrack {
                   // create variant bins for overlap over a single isoform
                   // initially we do this for all of them, for both position and type
                   variantData.forEach(variant => {
-                    let consequence = getConsequence(variant)
+                    let consequence = getConsequence(variant);
                     let {type, fmax, fmin} = variant;
                     // we should ONLY ever find one or zero
                     let foundVariantBins = variantBins.filter( fb => {
@@ -374,6 +374,18 @@ export default class IsoformVariantTrack {
                     if(foundVariantBins && foundVariantBins.length > 0 ){
                       // add variant to this bin and adust the min and max
                       let foundBin = foundVariantBins[0];
+                      let foundMatchingVariantSet = foundVariantBins.variantSet ? foundVariantBins.variantSet.filter( b => b.type === type && b.consequence === consequence) : undefined;
+                      if(foundMatchingVariantSet){
+                        foundMatchingVariantSet.variants.push(variant);
+                      }
+                      else{
+                        foundVariantBins.variantSet = {
+                          variants: [variant],
+                          type,
+                          consequence,
+                        }
+                      }
+
                       foundBin.variants.push(variant);
                       // console.log(foundBin.fmin,adjustedFmin,x(variant.fmin))
                       // console.log(foundBin.fmax,adjustedFmax,x(variant.fmax))
@@ -385,6 +397,11 @@ export default class IsoformVariantTrack {
                     else{
                       const newBin = {
                         fmin, fmax, type, consequence,
+                        variantSet: {
+                          variants:[variant],
+                          type,
+                          consequence
+                        },
                         variants: [variant]
                       };
                       variantBins.push( newBin);
@@ -395,7 +412,7 @@ export default class IsoformVariantTrack {
                   });
 
                   // 12 if all have 1
-                  // console.log('variant bins, ',variantBins)
+                  console.log('variant bins, ',variantBins)
                   variantBins.forEach(variant => {
                     let {type, fmax, fmin} = variant;
                     // console.log('regular data, ',x(fmin),x(fmax),type)
