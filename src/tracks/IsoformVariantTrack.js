@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import {calculateNewTrackPosition, checkSpace, findRange} from '../RenderFunctions';
 import {
+  generateVariantDataBins,
   getColorsForConsequences, getConsequence,
   getVariantDescription, getVariantDescriptions,
   getVariantSymbol, mergeConsequenceColors,
@@ -341,6 +342,8 @@ export default class IsoformVariantTrack {
                 if (validInnerType) {
 
                   let variantBins = [];
+                  let calculatedVariantBins = generateVariantDataBins(variantData);
+                  console.log('test varint bins',calculatedVariantBins)
                   // create variant bins for overlap over a single isoform
                   // initially we do this for all of them, for both position and type
                   variantData.forEach(variant => {

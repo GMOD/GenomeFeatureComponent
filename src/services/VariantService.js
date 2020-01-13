@@ -9,6 +9,103 @@ export function getDescriptionDimensions(description){
   return {descriptionWidth,descriptionHeight};
 }
 
+function findVariantBinIndexForPosition(variantBins,variant) {
+  let {fmax, fmin} = variant;
+  return variantBins.findIndex( fb => {
+    const relativeMin = fb.fmin;
+    const relativeMax = fb.fmax;
+
+    // if we overlap thAe min edge then take the minimum and whatever the maximum and add
+    if(relativeMin <= fmin && relativeMax >= fmin){
+      return true ;
+    }
+    // if we overlap the max edge then take the maximum and whatever the maximum and add
+    if(relativeMax <= fmax && relativeMax >= fmax){
+      return true ;
+    }
+    // if both are within the edges then just add it
+    if(relativeMin >= fmin && relativeMax <= fmax){
+      return true ;
+    }
+
+    return false ;
+  });
+}
+
+export function generateVariantDataBins(variantData){
+  let variantBins = [];
+  variantData.forEach(variant => {
+    let consequence = getConsequence(variant);
+    let {type, fmax, fmin} = variant;
+    // we should ONLY ever find one or zero
+    let foundVariantBinIndex = findVariantBinIndexForPosition(variantBins,variant);
+
+    // if a variant is found within a position bin
+    if(foundVariantBinIndex >=0 ){
+
+      // add variant to this bin and adjust the min and max
+      let foundBin = variantBins[foundVariantBinIndex];
+      console.log('found',variantBins[foundVariantBinIndex]);
+      const foundMatchingVariantSetIndex = variantBins[foundVariantBinIndex].variantSet ? variantBins[foundVariantBinIndex].variantSet.findIndex( b => b.type === type && b.consequence === consequence) : -1 ;
+
+
+      // TODO:
+      // if matching type and consequence, add the variant to the found variant set
+      // adjust the bin min and max though
+      if(foundMatchingVariantSetIndex>=0){
+        // console.log('found  and adding to ',foundVariantBinIndex[foundMatchingVariantSet].variantSet)
+        // foundVariantBinIndex[foundMatchingVariantSet].variantSet.push(variant);
+        let foundFmin = Math.min(variantBins[foundMatchingVariantSetIndex].variantSet.fmin,fmin) ;
+        let foundFmax = Math.max(variantBins[foundMatchingVariantSetIndex].variantSet.fmax,fmax) ;
+        variantBins[foundMatchingVariantSetIndex].fmin = foundFmin ;
+        variantBins[foundMatchingVariantSetIndex].fmax = foundFmax ;
+        variantBins[foundMatchingVariantSetIndex].variantSet.fmin = foundFmin ;
+        variantBins[foundMatchingVariantSetIndex].variantSet.fmax = foundFmax ;
+
+        variantBins[foundMatchingVariantSetIndex].variantSet.push(variant);
+        // console.log('pushed found adding to ',foundVariantBinIndex[foundMatchingVariantSet].variantSet)
+        // foundMatchingVariantSet.variants.push(variant);
+      }
+      else{
+        console.log('found for other ',foundVariantBinIndex,variant)
+        variantBins[foundVariantBinIndex].fmin = fmin ;
+        variantBins[foundVariantBinIndex].fmax = fmax ;
+        variantBins[foundVariantBinIndex].variantSet = [{
+          variants: [variant],
+          type,
+          consequence,
+          fmin,
+          fmax,
+        }];
+      }
+
+      foundBin.variants.push(variant);
+      // console.log(foundBin.fmin,adjustedFmin,x(variant.fmin))
+      // console.log(foundBin.fmax,adjustedFmax,x(variant.fmax))
+      foundBin.fmin = Math.min(fmin,foundBin.fmin);
+      foundBin.fmax = Math.max(fmax,foundBin.fmax);
+      // console.log('final',JSON.stringify([foundBin.fmin,foundBin.fmax]))
+      variantBins[foundVariantBinIndex] = foundBin;
+    }
+    else{
+      const newBin = {
+        fmin, fmax, type, consequence,
+        variantSet: [{
+          variants:[variant],
+          type,
+          consequence
+        }],
+        variants: [variant]
+      };
+      variantBins.push( newBin);
+      // console.log('pushed! ',JSON.stringify(variantBins.length))
+    }
+    // console.log('pushing ',JSON.stringify(foundVariantBins[0]),'into ',JSON.stringify(variantBins));
+    // console.log('result',JSON.stringify(variantBins),variantBins.length);
+  });
+  return variantBins;
+}
+
 export function renderVariantDescriptions(descriptions){
   if(descriptions.length===1){
     return renderVariantDescription(descriptions[0]);
