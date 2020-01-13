@@ -14,13 +14,14 @@ ratExamples();
 mouseExamples();
 flyExamples();
 
-function createExample(isoformDataFunction,variantDataFunction,divId,showLabel){
+function createExample(isoformDataFunction,variantDataFunction,divId,showLabel,variantFilter){
   let configGlobal1 = {
     "locale": "global",
     "chromosome": '2L',
     "start": 132412,
     "end": 230018,
     "showVariantLabel":showLabel ,
+    "variantFilter":variantFilter ? variantFilter : [],
     "tracks": [
       {
         "id": 12,
@@ -51,8 +52,10 @@ function flyExamples(){
 // http://localhost:8080/apollo/vcf/remotefly/Phenotypic%20Variants/2L:132412..230018.json?includeGenotypes=false&ignoreCache=true
 // http://localhost:8080/apollo/track/remotefly/All%20Genes/2L:132412..230018.json?includeGenotypes=false&ignoreCache=true
   createExample(fakeAgrDataService.GetFakeFlyGeneExample1(),fakeAgrDataService.GetFakeFlyVariantExample1(),"viewerFlyExample1",true);
+  createExample(fakeAgrDataService.GetFakeFlyGeneExample2(),fakeAgrDataService.GetFakeFlyVariantExample2(),"viewerFlyExample3",true,['NT_033778.4:g.23975146T>C']);
   createExample(fakeAgrDataService.GetFakeFlyGeneExample2(),fakeAgrDataService.GetFakeFlyVariantExample2(),"viewerFlyExample2",true);
   createExample(fakeAgrDataService.GetFakeFlyGeneExample1(),fakeAgrDataService.GetFakeFlyVariantExample1(),"viewerFlyExample1NoLabel",false);
+  createExample(fakeAgrDataService.GetFakeFlyGeneExample2(),fakeAgrDataService.GetFakeFlyVariantExample2(),"viewerFlyExample3NoLabel",false,['NT_033778.4:g.23975146T>C']);
   createExample(fakeAgrDataService.GetFakeFlyGeneExample2(),fakeAgrDataService.GetFakeFlyVariantExample2(),"viewerFlyExample2NoLabel",false);
 }
 

@@ -13,11 +13,12 @@ import {renderTrackDescription} from "../services/TrackService";
 
 export default class IsoformVariantTrack {
 
-  constructor(viewer, track, height, width, transcriptTypes, variantTypes,showVariantLabel) {
+  constructor(viewer, track, height, width, transcriptTypes, variantTypes,showVariantLabel,variantFilter) {
     this.trackData = {};
     this.variantData = {};
     this.viewer = viewer;
     this.width = width;
+    this.variantFilter = variantFilter;
     this.height = height;
     this.transcriptTypes = transcriptTypes;
     this.variantTypes = variantTypes;
@@ -29,7 +30,7 @@ export default class IsoformVariantTrack {
   // for both testing/extensibility
   DrawTrack() {
     let isoformData = this.trackData;
-    let variantData = this.variantData;
+    let variantData = this.filterVariantData(this.variantData,this.variantFilter);
     let viewer = this.viewer;
     let width = this.width;
     let showVariantLabel = this.showVariantLabel;
@@ -343,7 +344,7 @@ export default class IsoformVariantTrack {
 
                   let variantBins = [];
                   let calculatedVariantBins = generateVariantDataBins(variantData);
-                  console.log('test varint bins',calculatedVariantBins)
+                  console.log('test varint bins',calculatedVariantBins);
                   // create variant bins for overlap over a single isoform
                   // initially we do this for all of them, for both position and type
                   variantData.forEach(variant => {
@@ -553,6 +554,15 @@ export default class IsoformVariantTrack {
     }
     // we return the appropriate height function
     return (row_count * ISOFORM_HEIGHT) + heightBuffer;
+  }
+
+  filterVariantData(variantData, variantFilter) {
+    if(variantFilter.length===0) return variantData ;
+    const outputData = variantData.filter( v => {
+      return variantFilter.indexOf(v.name)>=0;
+    });
+    // console.log('FILTERED variant data',variantData,variantFilter,outputData);
+    return outputData;
   }
 
   renderTooltipDescription(tooltipDiv, descriptionHtml,closeFunction) {
