@@ -343,7 +343,7 @@ export default class IsoformVariantTrack {
                 if (validInnerType) {
 
                   let variantBins = [];
-                  console.log('input variant data',variantData);
+                  console.log('INPUT VARIANT DATA',variantData);
                   let calculatedVariantBins = generateVariantDataBins(variantData);
                   console.log('OUTPUT VARIANT DATA',calculatedVariantBins);
                   // create variant bins for overlap over a single isoform
