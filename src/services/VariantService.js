@@ -71,15 +71,18 @@ export function generateVariantDataBins(variantData){
       }
       else{
         // console.log('found for other ',foundVariantBinIndex,variant)
-        foundBin.fmin = fmin ;
-        foundBin.fmax = fmax ;
-        foundBin.variantSet = [{
+        let foundMin = Math.min(foundBin.fmin,fmin) ;
+        let foundMax = Math.max(foundBin.fmax,fmax) ;
+
+        foundBin.fmin = foundMin;
+        foundBin.fmax = foundMax ;
+        foundBin.variantSet.push({
           variants: [variant],
           type,
           consequence,
           fmin,
           fmax,
-        }];
+        });
         console.log('new variant set to add',variantBins[foundVariantBinIndex],foundBin,JSON.stringify('forced'));
       }
 
