@@ -15,6 +15,7 @@
     "start": "webpack && webpack-dev-server",
     "lint": "npx eslint src/",
     "buildandserve": "npm run clean && webpack && http-server -c-1 dist/",
+    "test": "NODE_ENV=test webpack --webpack-config webpack.config-test.js \"tests/index-test.js\"",
     "cleanbuild": "npm run clean && webpack",
     "build": "webpack",
     "pack": "rm -rf dist && npm run rmdsstore && npm run build && npm pack"
@@ -43,7 +44,8 @@
     "http-server": "^0.11.1",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.3.1"
+    "webpack-dev-server": "^3.3.1",
+    "expect": "latest"
   },
   "author": "Nathan Dunn",
   "contributors": [

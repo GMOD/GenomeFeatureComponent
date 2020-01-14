@@ -45,7 +45,7 @@ export function generateVariantDataBins(variantData){
 
       // add variant to this bin and adjust the min and max
       let foundBin = variantBins[foundVariantBinIndex];
-      console.log('found',variantBins[foundVariantBinIndex]);
+      // console.log('found',variantBins[foundVariantBinIndex]);
       const foundMatchingVariantSetIndex = variantBins[foundVariantBinIndex].variantSet ? variantBins[foundVariantBinIndex].variantSet.findIndex( b => b.type === type && b.consequence === consequence) : -1 ;
 
 
@@ -67,7 +67,7 @@ export function generateVariantDataBins(variantData){
         // foundMatchingVariantSet.variants.push(variant);
       }
       else{
-        console.log('found for other ',foundVariantBinIndex,variant)
+        // console.log('found for other ',foundVariantBinIndex,variant)
         variantBins[foundVariantBinIndex].fmin = fmin ;
         variantBins[foundVariantBinIndex].fmax = fmax ;
         variantBins[foundVariantBinIndex].variantSet = [{
