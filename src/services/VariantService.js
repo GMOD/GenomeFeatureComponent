@@ -32,7 +32,88 @@ function findVariantBinIndexForPosition(variantBins,variant) {
   });
 }
 
-export function generateVariantDataBins(variantData){
+// TODO: Delete, this is deprecated
+export function generateVariantBins(variantData){
+  // create variant bins for overlap over a single isoform
+  // initially we do this for all of them, for both position and type
+  let variantBins = [];
+  variantData.forEach(variant => {
+    let consequence = getConsequence(variant);
+    let {type, fmax, fmin} = variant;
+    // we should ONLY ever find one or zero
+    let foundVariantBinIndex = variantBins.findIndex( fb => {
+      const relativeMin = fb.fmin;
+      const relativeMax = fb.fmax;
+
+      // console.log(fb,adjustedFmin,adjustedFmax,type);
+      if(fb.type !== type) return false ;
+      if(fb.consequence !== consequence ) return false ;
+
+      // if we overlap thAe min edge then take the minimum and whatever the maximum and add
+      if(relativeMin <= fmin && relativeMax >= fmin){
+        return true ;
+      }
+      // if we overlap the max edge then take the maximum and whatever the maximum and add
+      if(relativeMax <= fmax && relativeMax >= fmax){
+        return true ;
+      }
+      // if both are within the edges then just add it
+      if(relativeMin >= fmin && relativeMax <= fmax){
+        return true ;
+      }
+
+      return false ;
+    });
+
+    if(foundVariantBinIndex >=0 ){
+      // add variant to this bin and adust the min and max
+      let foundBin = variantBins[foundVariantBinIndex];
+      // console.log('found',variantBins[foundVariantBinIndex]);
+      const foundMatchingVariantSetIndex = variantBins[foundVariantBinIndex].variantSet ? variantBins[foundVariantBinIndex].variantSet.findIndex( b => b.type === type && b.consequence === consequence) : -1 ;
+      if(foundMatchingVariantSetIndex>=0){
+        // console.log('found  and adding to ',foundVariantBinIndex[foundMatchingVariantSet].variantSet)
+        // foundVariantBinIndex[foundMatchingVariantSet].variantSet.push(variant);
+        variantBins[foundMatchingVariantSetIndex].variantSet.push(variant);
+        // console.log('pushed found adding to ',foundVariantBinIndex[foundMatchingVariantSet].variantSet)
+        // foundMatchingVariantSet.variants.push(variant);
+      }
+      else{
+        // console.log('found for other ',foundVariantBinIndex,variant)
+        variantBins[foundVariantBinIndex].variantSet = [{
+          variants: [variant],
+          type,
+          consequence,
+        }];
+      }
+
+      foundBin.variants.push(variant);
+      // console.log(foundBin.fmin,adjustedFmin,x(variant.fmin))
+      // console.log(foundBin.fmax,adjustedFmax,x(variant.fmax))
+      foundBin.fmin = Math.min(fmin,foundBin.fmin);
+      foundBin.fmax = Math.max(fmax,foundBin.fmax);
+      // console.log('final',JSON.stringify([foundBin.fmin,foundBin.fmax]))
+      variantBins[foundVariantBinIndex] = foundBin;
+    }
+    else{
+      const newBin = {
+        fmin, fmax, type, consequence,
+        variantSet: [{
+          variants:[variant],
+          type,
+          consequence
+        }],
+        variants: [variant]
+      };
+      variantBins.push( newBin);
+      // console.log('pushed! ',JSON.stringify(variantBins.length))
+    }
+    // console.log('pushing ',JSON.stringify(foundVariantBins[0]),'into ',JSON.stringify(variantBins));
+    // console.log('result',JSON.stringify(variantBins),variantBins.length);
+  });
+  return variantBins;
+}
+
+export function generateVariantDataBinsAndDataSets(variantData){
   let variantBins = [];
   variantData.forEach(variant => {
     let consequence = getConsequence(variant);
