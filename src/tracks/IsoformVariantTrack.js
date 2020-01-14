@@ -558,11 +558,9 @@ export default class IsoformVariantTrack {
 
   filterVariantData(variantData, variantFilter) {
     if(variantFilter.length===0) return variantData ;
-    const outputData = variantData.filter( v => {
+    return variantData.filter( v => {
       return variantFilter.indexOf(v.name)>=0;
     });
-    // console.log('FILTERED variant data',variantData,variantFilter,outputData);
-    return outputData;
   }
 
   renderTooltipDescription(tooltipDiv, descriptionHtml,closeFunction) {
@@ -586,9 +584,6 @@ export default class IsoformVariantTrack {
     await this.getTrackData(track,geneCallbackFunction);
     await this.getVariantData(track,variantCallbackFunction);
   }
-
-  // await isoformTrack.getTrackData(track);
-  // track_height += isoformTrack.DrawTrack();
 
   /* Method for isoformTrack service call */
   async getVariantData(track,callbackFunction) {
