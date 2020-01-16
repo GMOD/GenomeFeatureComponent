@@ -1,4 +1,4 @@
-import expect from 'expect'
+import assert from 'assert';
 import GenomeFeatureViewer from '../src/GenomeFeatureViewer';
 
 describe('GenomeFeatureViewer', () => {
@@ -15,7 +15,7 @@ describe('GenomeFeatureViewer', () => {
     });
 
     it('simple test', () => {
-      expect(true,false);
+      assert(true,false);
       console.log('YEAH')
     });
 
