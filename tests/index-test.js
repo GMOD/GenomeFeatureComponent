@@ -1,9 +1,10 @@
-// import expect from 'expect'
-// import GenomeFeature from "../src/GenomeFeatureViewer.css";
+import expect from 'expect'
 import GenomeFeatureViewer from '../src/GenomeFeatureViewer';
 
 describe('GenomeFeatureViewer', () => {
     let node;
+
+    console.log('asdfadsf')
 
     beforeEach(() => {
         node = document.createElement('div')
@@ -14,8 +15,7 @@ describe('GenomeFeatureViewer', () => {
     });
 
     it('simple test', () => {
-      // expect(true,false);
-      // assert 1 === 0 ;
+      expect(true,false);
       console.log('YEAH')
     });
 
