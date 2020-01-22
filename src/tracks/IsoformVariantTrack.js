@@ -509,32 +509,24 @@ export default class IsoformVariantTrack {
 
   }
 
-  async populateTrack(track,geneCallbackFunction,variantCallbackFunction) {
-    await this.getTrackData(track,geneCallbackFunction);
-    await this.getVariantData(track,variantCallbackFunction);
+  async populateTrack(track) {
+    await this.getTrackData(track);
+    await this.getVariantData(track);
   }
 
   /* Method for isoformTrack service call */
-  async getTrackData(track,callbackFunction) {
-    console.log("getting variant data with ",track,callbackFunction);
+  async getTrackData(track) {
     let externalLocationString = track["chromosome"] + ':' + track["start"] + '..' + track["end"];
-    console.log('external track location',externalLocationString)
     const isoformUrl = track["isoform_url"];
-    var dataUrl = isoformUrl[0] + encodeURI(track["genome"]) + isoformUrl[1] + encodeURI(externalLocationString) + isoformUrl[2];
-    console.log('isofrom data url',dataUrl)
+    const dataUrl = isoformUrl[0] + encodeURI(track["genome"]) + isoformUrl[1] + encodeURI(externalLocationString) + isoformUrl[2];
     this.trackData= await apolloService.fetchDataFromUrl(dataUrl);
-    console.log('track data set',this.trackData)
   }
 
   /* Method for isoformTrack service call */
-  async getVariantData(track,callbackFunction) {
-    console.log("getting track data with ",track,callbackFunction);
-    let externalLocationString = track["chromosome"] + ':' + track["start"] + '..' + track["end"];
-    console.log('external',externalLocationString)
+  async getVariantData(track) {
+    const externalLocationString = track["chromosome"] + ':' + track["start"] + '..' + track["end"];
     const variantUrl = track["variant_url"];
-    var dataUrl = variantUrl[0] + encodeURI(track["genome"]) + variantUrl[1] + encodeURI(externalLocationString) + variantUrl[2];
-    console.log('variant data url',dataUrl)
+    const dataUrl = variantUrl[0] + encodeURI(track["genome"]) + variantUrl[1] + encodeURI(externalLocationString) + variantUrl[2];
     this.variantData = await apolloService.fetchDataFromUrl(dataUrl);
-    console.log('variant data set',this.variantData)
   }
 }
