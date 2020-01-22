@@ -1,6 +1,8 @@
 import GenomeFeatureViewer from 'GenomeFeatureViewer';
 
-const BASE_URL = 'http://localhost:8080/apollo';
+// const BASE_URL = 'http://localhost:8080/apollo';
+// const BASE_URL = 'http://54.91.83.120:8080/apollo';
+const BASE_URL = 'https://agr-apollo.berkeleybop.io/apollo';
 
 // Global View Example
 
