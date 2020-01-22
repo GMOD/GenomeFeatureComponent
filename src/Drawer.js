@@ -98,6 +98,7 @@ export default class Drawer {
           {
             const isoformVariantTrack = new IsoformVariantTrack(viewer, track, height, width,transcriptTypes,variantTypes,showVariantLabel,variantFilter);
             await isoformVariantTrack.populateTrack(track,() => track.isoformFunction,() => track.variantFunction);
+            console.log('vae populate track',isoformVariantTrack.trackData,isoformVariantTrack.variantData)
             track_height += isoformVariantTrack.DrawTrack();
           }
           else if(track.type === "isoform")

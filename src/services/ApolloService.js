@@ -6,7 +6,7 @@ export class ApolloService
     */
     constructor(){ }
 
-    GetIsoformTrack(url){
+    fetchDataFromUrl(url){
         return new Promise((resolve, reject) =>{
             fetch(url).then((response) => {
                 resolve(response.json())

@@ -11,6 +11,8 @@ import {
 import {getColorForConsequence} from "../services/ConsequenceService";
 import {renderTrackDescription} from "../services/TrackService";
 // import {description} from "d3/dist/package";
+import {ApolloService} from "../services/ApolloService";
+let apolloService = new ApolloService();
 
 export default class IsoformVariantTrack {
 
@@ -520,7 +522,8 @@ export default class IsoformVariantTrack {
     const isoformUrl = track["isoform_url"];
     var dataUrl = isoformUrl[0] + encodeURI(track["genome"]) + isoformUrl[1] + encodeURI(externalLocationString) + isoformUrl[2];
     console.log('isofrom data url',dataUrl)
-    this.variantData = await callbackFunction(dataUrl);
+    this.trackData= await apolloService.fetchDataFromUrl(dataUrl);
+    console.log('track data set',this.trackData)
   }
 
   /* Method for isoformTrack service call */
@@ -531,6 +534,7 @@ export default class IsoformVariantTrack {
     const variantUrl = track["variant_url"];
     var dataUrl = variantUrl[0] + encodeURI(track["genome"]) + variantUrl[1] + encodeURI(externalLocationString) + variantUrl[2];
     console.log('variant data url',dataUrl)
-    this.trackData = await callbackFunction(dataUrl);
+    this.variantData = await apolloService.fetchDataFromUrl(dataUrl);
+    console.log('variant data set',this.variantData)
   }
 }

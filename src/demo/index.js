@@ -68,13 +68,13 @@ function createNetworkExample(range,genome,divId,showLabel,variantFilter){
         "id": 12,
         "genome": genome,
         "type": "isoform_variant",
-        "isoformFunction": apolloService.GetIsoformTrack,
+        "isoformFunction": apolloService.fetchDataFromUrl,
         "isoform_url": [
           "http://localhost:8080/apollo/track/",
           "/All%20Genes/",
           ".json"
         ],
-        "variantFunction": apolloService.GetIsoformTrack,
+        "variantFunction": apolloService.fetchDataFromUrl,
         "variant_url": [
           "http://localhost:8080/apollo/vcf/",
           "/Variants/",
