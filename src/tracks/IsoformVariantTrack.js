@@ -103,7 +103,6 @@ export default class IsoformVariantTrack {
 
     let geneList = {};
 
-    console.log('isoform data',isoformData)
     isoformData = isoformData.sort(function (a, b) {
       if (a.selected && !b.selected) return -1;
       if (!a.selected && b.selected) return 1;
@@ -171,15 +170,12 @@ export default class IsoformVariantTrack {
                 geneList[feature.name] = 'Green';
               }
 
-              // console.log(featureChild)
-
               let isoform = track.append("g").attr("class", "isoform")
                 .attr("transform", "translate(0," + ((row_count * ISOFORM_HEIGHT) + 10 + heightBuffer) + ")")
               ;
 
               if(addingGeneLabel){
                 text_string = feature.name;
-                // console.log('feature',feature)
                 text_label = isoform.append('text')
                   .attr('class', 'geneLabel')
                   .attr('fill', selected ? 'sandybrown' : 'black')
@@ -346,15 +342,13 @@ export default class IsoformVariantTrack {
                 }
                 if (validInnerType) {
 
-                  console.log('INPUT VARIANT DATA',variantData);
                   let variantBins = generateVariantDataBinsAndDataSets(variantData);
-                  console.log('OUTPUT VARIANT DATA',generateVariantBins(variantData),variantBins);
+                  // TODO: remove this once no longer needed
+                  generateVariantBins(variantData)
 
                   // 12 if all have 1
-                  // console.log('variant bins, ',variantBins)
                   variantBins.forEach(variant => {
                     let {type, fmax, fmin} = variant;
-                    // console.log('regular data, ',x(fmin),x(fmax),type)
                     if (
                       (fmin < innerChild.fmin && fmax > innerChild.fmin)
                       || (fmax > innerChild.fmax && fmin < innerChild.fmax)
@@ -366,7 +360,6 @@ export default class IsoformVariantTrack {
                       const consequenceColor = getColorsForConsequences(descriptions)[0];
                       let descriptionHtml = renderVariantDescriptions(descriptions);
                       const width = Math.ceil(x(fmax)-x(fmin)) < MIN_WIDTH ? MIN_WIDTH : Math.ceil(x(fmax)-x(fmin));
-                      // console.log('type type',type,`${variant.seqId}:${variant.fmin}..${variant.fmax}`,`${x(fmax)},${x(fmin)}`);
                       if (type.toLowerCase() === 'deletion' || type.toLowerCase() === 'mnv') {
                         isoform.append('rect')
                           .attr('class', 'variant-deletion')
@@ -429,7 +422,6 @@ export default class IsoformVariantTrack {
                       if(drawnVariant && showVariantLabel){
                         let symbol_string = getVariantSymbol(variant);
                         const symbol_string_length = symbol_string.length ? symbol_string.length : 1;
-                        // console.log('symbold string',symbol_string,symbol_string_length,fmin)
                         isoform.append('text')
                           .attr('class', 'variantLabel')
                           .attr('fill', selected ? 'sandybrown' : consequenceColor)

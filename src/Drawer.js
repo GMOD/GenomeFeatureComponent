@@ -98,7 +98,6 @@ export default class Drawer {
           {
             const isoformVariantTrack = new IsoformVariantTrack(viewer, track, height, width,transcriptTypes,variantTypes,showVariantLabel,variantFilter);
             await isoformVariantTrack.populateTrack(track,() => track.isoformFunction,() => track.variantFunction);
-            console.log('vae populate track',isoformVariantTrack.trackData,isoformVariantTrack.variantData)
             track_height += isoformVariantTrack.DrawTrack();
           }
           else if(track.type === "isoform")
@@ -192,7 +191,6 @@ export default class Drawer {
             // Want to make sure we don't go beyond our sequence length. Which is defined by our range.
             if( newX <= dragThresh["maxNegative"] || newX > -(ref.range[0]) + 100 + (scrollValue / 2))
             {
-                console.log(newX);
                 return "translate(" + trs[0] +"," + trs[1] + ")";
             }
 
@@ -218,7 +216,7 @@ export default class Drawer {
         // ex. position 20, we want total 100 nucelotides
         // (20 - 49) & (50 + 20)
         // definitely in scrollable
-        if(start == end)
+        if(start === end)
         {
             sequenceLength = 300; // hardcode 150 to each end.
             rangeWidth = desiredScaling * sequenceLength;
