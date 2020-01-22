@@ -101,6 +101,7 @@ export default class IsoformVariantTrack {
 
     let geneList = {};
 
+    console.log('isoform data',isoformData)
     isoformData = isoformData.sort(function (a, b) {
       if (a.selected && !b.selected) return -1;
       if (!a.selected && b.selected) return 1;
@@ -512,12 +513,24 @@ export default class IsoformVariantTrack {
   }
 
   /* Method for isoformTrack service call */
-  async getVariantData(track,callbackFunction) {
-    this.variantData = await callbackFunction();
+  async getTrackData(track,callbackFunction) {
+    console.log("getting variant data with ",track,callbackFunction);
+    let externalLocationString = track["chromosome"] + ':' + track["start"] + '..' + track["end"];
+    console.log('external track location',externalLocationString)
+    const isoformUrl = track["isoform_url"];
+    var dataUrl = isoformUrl[0] + encodeURI(track["genome"]) + isoformUrl[1] + encodeURI(externalLocationString) + isoformUrl[2];
+    console.log('isofrom data url',dataUrl)
+    this.variantData = await callbackFunction(dataUrl);
   }
 
   /* Method for isoformTrack service call */
-  async getTrackData(track,callbackFunction) {
-    this.trackData = await callbackFunction();
+  async getVariantData(track,callbackFunction) {
+    console.log("getting track data with ",track,callbackFunction);
+    let externalLocationString = track["chromosome"] + ':' + track["start"] + '..' + track["end"];
+    console.log('external',externalLocationString)
+    const variantUrl = track["variant_url"];
+    var dataUrl = variantUrl[0] + encodeURI(track["genome"]) + variantUrl[1] + encodeURI(externalLocationString) + variantUrl[2];
+    console.log('variant data url',dataUrl)
+    this.trackData = await callbackFunction(dataUrl);
   }
 }

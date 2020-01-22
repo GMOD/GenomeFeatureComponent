@@ -1,18 +1,19 @@
 import GenomeFeatureViewer from 'GenomeFeatureViewer';
 import {FakeAgrDataService} from "./FakeAgrDataService";
-
-// import {ApolloService} from "../services/ApolloService";
-// let apolloService = new ApolloService();
-
-// Global View Example
 let fakeAgrDataService = new FakeAgrDataService();
 
-oldExamples();
-wormExamples();
-fishExamples();
-ratExamples();
-mouseExamples();
-flyExamples();
+import {ApolloService} from "../services/ApolloService";
+let apolloService = new ApolloService();
+
+// Global View Example
+
+// oldExamples();
+// wormExamples();
+// fishExamples();
+// ratExamples();
+// mouseExamples();
+// flyExamples();
+networkExample();
 
 function createExample(isoformDataFunction,variantDataFunction,divId,showLabel,variantFilter){
   let configGlobal1 = {
@@ -45,6 +46,44 @@ function createExample(isoformDataFunction,variantDataFunction,divId,showLabel,v
   };
 
   new GenomeFeatureViewer(configGlobal1, `#${divId}`, 900, 500);
+}
+
+function networkExample(){
+  createNetworkExample("10:94485648..94489071","Rattus norvegicus","networkExampleRat1",false,null);
+}
+
+function createNetworkExample(range,genome,divId,showLabel,variantFilter){
+  const chromosome = range.split(":")[0];
+  const [start,end] = range.split(":")[1].split("..");
+  let configGlobal1 = {
+    "locale": "global",
+    "chromosome": chromosome,
+    "start": start,
+    "end": end,
+    "showVariantLabel": showLabel,
+    "variantFilter": variantFilter ? variantFilter : [],
+    "tracks": [
+      {
+        "id": 12,
+        "genome": genome,
+        "type": "isoform_variant",
+        "isoformFunction": apolloService.GetIsoformTrack,
+        "isoform_url": [
+          "https://agr-apollo.berkeleybop.io/apollo/track/",
+          "/All%20Genes/",
+          ".json"
+        ],
+        "variantFunction": apolloService.GetIsoformTrack,
+        "variant_url": [
+          "https://agr-apollo.berkeleybop.io/apollo/vcf/",
+          "/Variants/",
+          ".json"
+        ],
+
+      },
+    ]
+  };
+    new GenomeFeatureViewer(configGlobal1, `#${divId}`, 900, 500);
 }
 
 function flyExamples(){
