@@ -50,6 +50,7 @@ function createExample(isoformDataFunction,variantDataFunction,divId,showLabel,v
 
 function networkExample(){
   createNetworkExample("10:94485648..94489071","Rattus norvegicus","networkExampleRat1",false,null);
+  createNetworkExample("V:7114..57432","worm","networkExampleWorm1",false,null);
 }
 
 function createNetworkExample(range,genome,divId,showLabel,variantFilter){
