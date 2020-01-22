@@ -49,7 +49,7 @@ function createExample(isoformDataFunction,variantDataFunction,divId,showLabel,v
 }
 
 function networkExample(){
-  createNetworkExample("10:94485648..94489071","Rattus norvegicus","networkExampleRat1",false,null);
+  createNetworkExample("10:94485648..94489071","rat","networkExampleRat1",false,null);
   createNetworkExample("V:7114..57432","worm","networkExampleWorm1",false,null);
 }
 
@@ -70,13 +70,13 @@ function createNetworkExample(range,genome,divId,showLabel,variantFilter){
         "type": "isoform_variant",
         "isoformFunction": apolloService.GetIsoformTrack,
         "isoform_url": [
-          "https://agr-apollo.berkeleybop.io/apollo/track/",
+          "http://localhost:8080/apollo/track/",
           "/All%20Genes/",
           ".json"
         ],
         "variantFunction": apolloService.GetIsoformTrack,
         "variant_url": [
-          "https://agr-apollo.berkeleybop.io/apollo/vcf/",
+          "http://localhost:8080/apollo/vcf/",
           "/Variants/",
           ".json"
         ],
