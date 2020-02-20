@@ -9,7 +9,7 @@ const BASE_URL = 'https://build.alliancegenome.org/apollo';
 // Global View Example
 
 oldExamples();
-yeastExamlpe();
+isoformExamples();
 wormExamples();
 fishExamples();
 ratExamples();
@@ -66,7 +66,7 @@ function wormExamples(){
 }
 
 
-function yeastExamlpe(){
+function isoformExamples(){
   createIsoformExample("chrIV:1276345..1277478","yeast","yeastExampleIsoformOnly",TRACK_TYPE.ISOFORM,true);
   createIsoformExample("25:15029041..15049781","zebrafish","zebrafishExampleIsoformOnly",TRACK_TYPE.ISOFORM,true);
 }
