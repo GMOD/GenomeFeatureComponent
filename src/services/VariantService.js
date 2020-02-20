@@ -189,31 +189,31 @@ export function renderVariantDescriptions(descriptions){
 }
 
 export function renderVariantDescription(description){
-  let {descriptionHeight, descriptionWidth} = getDescriptionDimensions(description);
+  let {descriptionWidth} = getDescriptionDimensions(description);
   let returnString = '';
   const location = description.location ;
-  const chromosome = location.split(':')[0];
   const [start,stop] = location.split(':')[1].split('..');
   let alt_allele = description.alternative_alleles;
   let ref_allele = description.reference_allele;
-  if(description.type == 'SNV'){
+  let length
+  if(description.type === 'SNV'){
     length = "1bp";
   }
-  else if (description.type == 'deletion'){
+  else if (description.type === 'deletion'){
     length = ref_allele.length-1+'bp deleted';
   }
-  else if(description.type == 'insertion'){
-    if(alt_allele == 'ALT_MISSING'){length = "unknown length inserted";alt_allele = 'n+';}
+  else if(description.type === 'insertion'){
+    if(alt_allele === 'ALT_MISSING'){length = "unknown length inserted";alt_allele = 'n+';}
     else{length = alt_allele.length-1 +"bp inserted";}
   }
-  else if(description.type == 'MNV'){
+  else if(description.type === 'MNV'){
     length = ref_allele.length +"bp";
 
   }
-  else if(description.type == 'delins'){
+  else if(description.type === 'delins'){
     var del = ref_allele.length-1+"bp deleted";
     var ins;
-    if(alt_allele == 'ALT_MISSING'){ins="unknown length inserted";alt_allele = 'n+';}
+    if(alt_allele === 'ALT_MISSING'){ins="unknown length inserted";alt_allele = 'n+';}
     else{
       ins = alt_allele.length -1+"bp inserted";
     }
@@ -234,15 +234,15 @@ export function renderVariantDescription(description){
   else {
     alt_allele = alt_allele.substring(0,1).toLowerCase()+alt_allele.substring(1).toUpperCase();
   }
-  if(description.type == 'SNV' || description.type == 'MNV'){
+  if(description.type === 'SNV' || description.type === 'MNV'){
     alt_allele = alt_allele.toUpperCase();
     ref_allele = ref_allele.toUpperCase();
   }
   let change='';
-  if (description.type == 'insertion') {
+  if (description.type === 'insertion') {
        change = 'ins: '+alt_allele;
   }
-  else if (description.type == 'deletion') {
+  else if (description.type === 'deletion') {
        change = 'del: '+ref_allele;
   }
   else {
@@ -267,6 +267,7 @@ export function renderVariantDescription(description){
   }
   if(description.alternative_alleles){
     returnString += `<tr><th>Sequence Change</th><td>${change}</td></tr>`;
+    // returnString += `<tr><th>Alternative Alleles</th><td>${description.alternative_alleles.length>descriptionWidth ? description.alternative_alleles.substr(0,descriptionWidth) : description.alternative_alleles}</td></tr>`;
   }
 
 
