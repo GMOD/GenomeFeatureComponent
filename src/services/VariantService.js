@@ -221,6 +221,15 @@ export function renderVariantDescription(description){
   else{
     length = stop-start + "bp";
   }
+  if(alt_allele.length >20){
+    alt_allele=alt_allele.substring(0,1).toLowerCase()+alt_allele.substring(1,8).toUpperCase()+"..."+alt_allele.substring(alt_allele.length-8).toUpperCase();
+  }
+  else {
+    alt_allele = alt_allele.substring(0,1).toLowerCase()+alt_allele.substring(1).toUpperCase();
+  }
+  if(description.type == 'SNV' || description.type == 'MNV' || description.type == 'deletion'){
+    alt_allele = alt_allele.toUpperCase();
+  }
   returnString += `<table class="tooltip-table"><tbody>`;
   returnString += `<tr><th>Symbol</th><td>${description.symbol}</td></tr>`;
   returnString += `<tr><th>Type</th><td>${description.type}</td></tr>`;
@@ -239,7 +248,7 @@ export function renderVariantDescription(description){
     returnString += `<tr><th>Alleles</th><td>${description.alleles.length>descriptionWidth ? description.alleles.substr(0,descriptionWidth) : description.alleles}</td></tr>`;
   }
   if(description.alternative_alleles){
-    returnString += `<tr><th>Alternative Alleles</th><td>${description.alternative_alleles.length>descriptionWidth ? description.alternative_alleles.substr(0,descriptionWidth) : description.alternative_alleles}</td></tr>`;
+    returnString += `<tr><th>Alternative Alleles</th><td>${alt_allele}</td></tr>`;
   }
 
 
