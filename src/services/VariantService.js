@@ -198,17 +198,18 @@ export function renderVariantDescription(description){
   if(description.type == 'SNV'){
     length = "1bp";
   }
+  else if (description.type == 'deletion'){
+    length = description.reference_allele.length-1+'bp deleted';
+  }
   else if(description.type == 'insertion'){
     if(alt_allele == 'ALT_MISSING'){length = "unknown length inserted";}
-    else{length = alt_allele.length-1 +"bp deleted";}
+    else{length = alt_allele.length-1 +"bp inserted";}
   }
   else if(description.type == 'MNV'){
     length = description.reference_allele.length +"bp";
 
   }
   else if(description.type == 'delins'){
-    //need to test
-    console.log("Name", description.symbol);
     var del = description.reference_allele.length-1+"bp deleted";
     var ins;
     if(alt_allele == 'ALT_MISSING'){ins="unknown length inserted";}
