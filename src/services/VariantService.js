@@ -194,6 +194,32 @@ export function renderVariantDescription(description){
   const location = description.location ;
   const chromosome = location.split(':')[0];
   const [start,stop] = location.split(':')[1].split('..');
+  let alt_allele = description.alternative_alleles;
+  if(description.type == 'SNV'){
+    length = "1bp";
+  }
+  else if(description.type == 'insertion'){
+    if(alt_allele == 'ALT_MISSING'){length = "unknown length inserted";}
+    else{length = alt_allele.length-1 +"bp deleted";}
+  }
+  else if(description.type == 'MNV'){
+    length = description.reference_allele.length +"bp";
+
+  }
+  else if(description.type == 'delins'){
+    //need to test
+    console.log("Name", description.symbol);
+    var del = description.reference_allele.length-1+"bp deleted";
+    var ins;
+    if(alt_allele == 'ALT_MISSING'){ins="unknown length inserted";}
+    else{
+      ins = alt_allele.length -1+"bp inserted";
+    }
+    length = del + "; "+ins;
+  }
+  else{
+    length = stop-start + "bp";
+  }
   returnString += `<table class="tooltip-table"><tbody>`;
   returnString += `<tr><th>Symbol</th><td>${description.symbol}</td></tr>`;
   returnString += `<tr><th>Type</th><td>${description.type}</td></tr>`;
@@ -201,7 +227,7 @@ export function renderVariantDescription(description){
   if(description.impact){
     returnString += `<tr><th>Impact</th><td>${description.impact.length>descriptionWidth ? description.impact.substr(0,descriptionWidth) : description.impact}</td></tr>`;
   }
-  returnString += `<tr><th>Length</th><td>${stop-start} bp</td></tr>`;
+  returnString += `<tr><th>Length</th><td>${length}</td></tr>`;
   if(description.name!==description.symbol){
     returnString += `<tr><th>Name</th><td>${description.name}</td></tr>`;
   }
@@ -265,6 +291,7 @@ export function getVariantDescription(variant){
   returnObject.type =  variant.type;
   returnObject.name =  variant.name;
   returnObject.description =  variant.description;
+  returnObject.reference_allele =  variant.reference_allele;
 
   if(variant.allele_of_genes){
     if(variant.allele_of_genes.values && variant.allele_of_genes.values.length>0){
