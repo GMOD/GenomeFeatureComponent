@@ -45,7 +45,7 @@ function mouseExamples(){
   // http://localhost:8080/apollo/track/remotemouse/All%20Genes/6:113619452..113636198.json?includeGenotypes=false&ignoreCache=true  let configGlobal1 = {
   createExample("3:115707662..115717830","mouse","viewerMouseExample2",TRACK_TYPE.ISOFORM_AND_VARIANT,false);
   createExample("11:69550420..69563869","mouse","viewerMouseExample3",TRACK_TYPE.ISOFORM_AND_VARIANT,false);
-  createExample("17:46007760..46041588 ","mouse","viewerMouseExample4",TRACK_TYPE.ISOFORM_AND_VARIANT,false);
+  createExample("17:46007760..46041588","mouse","viewerMouseExample4",TRACK_TYPE.ISOFORM_AND_VARIANT,false);
   createExample("6:113619452..113636198","mouse","viewerMouseExample1",TRACK_TYPE.ISOFORM_EMBEDDED_VARIANT,true);
   createExample("6:113619452..113636198","mouse","viewerMouseExample1NoLabel",TRACK_TYPE.ISOFORM_EMBEDDED_VARIANT,false);
   createExample("6:113619452..113636198","mouse","viewerMouseExample1NoLabelAnd",TRACK_TYPE.ISOFORM_AND_VARIANT,false);

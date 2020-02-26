@@ -136,7 +136,6 @@ export default class IsoformAndVariantTrack {
         let isPoints = false;
         let viewerWidth = this.width;
         let symbol_string = getVariantSymbol(variant);
-        console.log('variant feedback',variant);
         const descriptions = getVariantDescriptions(variant);
         let descriptionHtml = renderVariantDescriptions(descriptions);
         const consequenceColor = getColorsForConsequences(descriptions)[0];
