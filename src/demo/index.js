@@ -17,6 +17,10 @@ ratExamples();
 mouseExamples();
 flyExamples();
 
+function closeButton(){
+  alert('close')
+}
+
 
 
 function flyExamples(){
@@ -101,7 +105,16 @@ function createExample(range,genome,divId,type,showLabel,variantFilter){
       },
     ]
   };
-  new GenomeFeatureViewer(configGlobal1, `#${divId}`, 900, 500);
+  const gfc = new GenomeFeatureViewer(configGlobal1, `#${divId}`, 900, 500);
+
+  const closeButton = document.getElementById(divId+'Button');
+  if(closeButton){
+    closeButton.addEventListener( 'click', () => {
+      console.log('a')
+      gfc.closeModal();
+      console.log('b')
+    })
+  }
 }
 
 function createIsoformExample(range,genome,divId,type,showLabel,variantFilter) {
