@@ -12,9 +12,12 @@ import {renderTrackDescription} from "../services/TrackService";
 import {ApolloService} from "../services/ApolloService";
 let apolloService = new ApolloService();
 
+// TODO: make configurable and a const / default
+let MAX_ROWS = 9;
+
 export default class IsoformAndVariantTrack {
 
-  constructor(viewer, track, height, width, transcriptTypes, variantTypes,showVariantLabel,variantFilter) {
+  constructor(viewer, track, height, width, transcriptTypes, variantTypes,showVariantLabel,variantFilter,binRatio) {
     this.trackData = {};
     this.variantData = {};
     this.viewer = viewer;
@@ -23,6 +26,7 @@ export default class IsoformAndVariantTrack {
     this.height = height;
     this.transcriptTypes = transcriptTypes;
     this.variantTypes = variantTypes;
+    this.binRatio = binRatio ;
     this.showVariantLabel = showVariantLabel!==undefined ? showVariantLabel : true ;
   }
 
@@ -35,9 +39,8 @@ export default class IsoformAndVariantTrack {
     let viewer = this.viewer;
     let width = this.width;
     let showVariantLabel = this.showVariantLabel;
+    let binRatio = this.binRatio;
 
-    // TODO: make configurable and a const / default
-    let MAX_ROWS = 9;
 
     let UTR_feats = ["UTR", "five_prime_UTR", "three_prime_UTR"];
     let CDS_feats = ["CDS"];
@@ -125,7 +128,7 @@ export default class IsoformAndVariantTrack {
     // **************************************
     // Seperate isoform and variant render
     // **************************************
-      let variantBins = generateVariantDataBinsAndDataSets(variantData,viewEnd-viewStart);
+      let variantBins = generateVariantDataBinsAndDataSets(variantData,(viewEnd-viewStart)*binRatio);
 
       variantBins.forEach(variant => {
         let {type, fmax, fmin} = variant;

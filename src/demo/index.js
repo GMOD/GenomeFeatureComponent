@@ -78,6 +78,7 @@ function isoformExamples(){
 function createExample(range,genome,divId,type,showLabel,variantFilter){
   const chromosome = range.split(":")[0];
   const [start,end] = range.split(":")[1].split("..");
+  const ratio = 0.01;
   let configGlobal1 = {
     "locale": "global",
     "chromosome": chromosome,
@@ -85,6 +86,7 @@ function createExample(range,genome,divId,type,showLabel,variantFilter){
     "end": end,
     "showVariantLabel": showLabel,
     "variantFilter": variantFilter ? variantFilter : [],
+    "binRatio":ratio,
     "tracks": [
       {
         "id": 12,
