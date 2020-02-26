@@ -156,16 +156,16 @@ export default class IsoformAndVariantTrack {
             .on("mouseover", function(d){
               let theVariant = d.variant;
               d3.selectAll(".variant-deletion")
-                .filter(function(d){return d.variant == theVariant})
+                .filter(function(d){return d.variant === theVariant})
                 .style("stroke" , "black");
-              d3.select(this.parentNode).raise().selectAll(".variantLabel,.variantLabelBackround")
-                .filter(function(d){return d.variant == theVariant})
+              d3.select(this.parentNode).raise().selectAll(".variantLabel,.variantLabelBackground")
+                .filter(function(d){return d.variant === theVariant})
                 .style("opacity", 1);
             })
             .on("mouseout", function(d){
               d3.selectAll(".variant-deletion")
                 .style("stroke" , null);
-              d3.select(this.parentNode).selectAll(".variantLabel,.variantLabelBackround")
+              d3.select(this.parentNode).selectAll(".variantLabel,.variantLabelBackground")
                 .style("opacity",0);
             })
             .datum({fmin: fmin, fmax: fmax, variant: symbol_string});
@@ -184,16 +184,16 @@ export default class IsoformAndVariantTrack {
             .on("mouseover", function(d){
               let theVariant = d.variant;
               d3.selectAll(".variant-SNV")
-                .filter(function(d){return d.variant == theVariant})
+                .filter(function(d){return d.variant === theVariant})
                 .style("stroke" , "black");
-              d3.select(this.parentNode).raise().selectAll(".variantLabel,.variantLabelBackround")
-                .filter(function(d){return d.variant == theVariant})
+              d3.select(this.parentNode).raise().selectAll(".variantLabel,.variantLabelBackground")
+                .filter(function(d){return d.variant === theVariant})
                 .style("opacity", 1);
             })
             .on("mouseout", function(d){
               d3.selectAll(".variant-SNV")
                 .style("stroke" , null);
-              d3.select(this.parentNode).selectAll(".variantLabel,.variantLabelBackround")
+              d3.select(this.parentNode).selectAll(".variantLabel,.variantLabelBackground")
                 .style("opacity",0);
             })
             .datum({fmin: fmin, fmax: fmax, variant: symbol_string});
@@ -212,16 +212,16 @@ export default class IsoformAndVariantTrack {
               .on("mouseover", function(d){
                 let theVariant = d.variant;
                 d3.selectAll(".variant-insertion")
-                  .filter(function(d){return d.variant == theVariant})
+                  .filter(function(d){return d.variant === theVariant})
                   .style("stroke" , "black");
-                d3.select(this.parentNode).raise().selectAll(".variantLabel,.variantLabelBackround")
-                  .filter(function(d){return d.variant == theVariant})
+                d3.select(this.parentNode).raise().selectAll(".variantLabel,.variantLabelBackground")
+                  .filter(function(d){return d.variant === theVariant})
                   .style("opacity", 1);
               })
               .on("mouseout", function(d){
                 d3.selectAll(".variant-insertion")
                   .style("stroke" , null);
-                d3.select(this.parentNode).selectAll(".variantLabel,.variantLabelBackround")
+                d3.select(this.parentNode).selectAll(".variantLabel,.variantLabelBackground")
                   .style("opacity",0);
               })
               .datum({fmin: fmin, fmax: fmax, variant: symbol_string});
@@ -240,16 +240,16 @@ export default class IsoformAndVariantTrack {
             .on("mouseover", function(d){
               let theVariant = d.variant;
               d3.selectAll(".variant-delins")
-                .filter(function(d){return d.variant == theVariant})
+                .filter(function(d){return d.variant === theVariant})
                 .style("stroke" , "black");
-              d3.select(this.parentNode).raise().selectAll(".variantLabel,.variantLabelBackround")
-                .filter(function(d){return d.variant == theVariant})
+              d3.select(this.parentNode).raise().selectAll(".variantLabel,.variantLabelBackground")
+                .filter(function(d){return d.variant === theVariant})
                 .style("opacity", 1);
             })
             .on("mouseout", function(d){
               d3.selectAll(".variant-delins")
                 .style("stroke" , null);
-              d3.select(this.parentNode).selectAll(".variantLabel,.variantLabelBackround")
+              d3.select(this.parentNode).selectAll(".variantLabel,.variantLabelBackground")
                 .style("opacity",0);
             })
             .datum({fmin: fmin, fmax: fmax, variant: symbol_string});
