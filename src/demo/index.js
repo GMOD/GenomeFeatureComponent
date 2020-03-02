@@ -108,12 +108,20 @@ function createExample(range,genome,divId,type,showLabel,variantFilter){
   };
   const gfc = new GenomeFeatureViewer(configGlobal1, `#${divId}`, 900, 500);
 
-  const closeButton = document.getElementById(divId+'Button');
+  const closeButton = document.getElementById(divId+'CloseButton');
   if(closeButton){
     closeButton.addEventListener( 'click', () => {
-      console.log('a')
       gfc.closeModal();
-      console.log('b')
+    })
+  }
+
+  const legendButton = document.getElementById(divId+'LegendButton');
+  const legendTarget = document.getElementById(divId+'LegendTarget');
+  if(legendButton && legendTarget){
+    legendButton.addEventListener( 'click', () => {
+      console.log('1');
+      legendTarget.innerHTML = gfc.generateLegend() ;
+      console.log('2')
     })
   }
 }

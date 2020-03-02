@@ -31,6 +31,13 @@ export default class GenomeFeatureViewer {
         this.drawer.draw();
     }
 
+    generateLegend(){
+        let returnString = `<div><h3>CAts</h3></div>`;
+
+
+        return returnString;
+    }
+
     closeModal(){
       const elements = document.getElementsByClassName('gfc-tooltip');
       for( let tooltipDiv of elements){
