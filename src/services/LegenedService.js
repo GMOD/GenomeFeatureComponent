@@ -1,5 +1,5 @@
 import {getColorForConsequence} from "./ConsequenceService";
-import {generateSnvPoints} from "./VariantService";
+import {generateDelinsPoint, generateInsertionPoint, generateSnvPoints} from "./VariantService";
 
 export function createLegendBox(){
     const isoformString = generateSnvPoints(0);
@@ -12,10 +12,10 @@ export function createLegendBox(){
     returnString += `</tr>`;
     returnString += `<tr>`;
     returnString += `<td><ul style="list-style-type:none;">`;
-    returnString += `<li><svg width="15" top="3" viewBox="-7 -2 15 15" style="display: inline;" xmlns="http://www.w3.org/2000/svg"><polygon stroke="black" fill="black" points="${isoformString}"></svg>point mutation / MNV </polygons></svg></li>`;
-    returnString += `<li>deletion etc. </li>`;
-    returnString += `<li>insertion etc. </li>`;
-    returnString += `<li>delins etc. </li>`;
+    returnString += `<li><svg width="15" top="3" viewBox="-7 -2 15 15" style="display: inline;" xmlns="http://www.w3.org/2000/svg"><polygon stroke="black" fill="black" points="${generateSnvPoints(0)}"></svg>point mutation / MNV </polygons></svg></li>`;
+    returnString += `<li><svg width="15" top="3" viewBox="0 -2 15 15" style="display: inline;" xmlns="http://www.w3.org/2000/svg"><rect stroke="black" fill="black" height="10" width="10"></svg>deletion</polygons></svg></li>`;
+    returnString += `<li><svg width="15" top="3" viewBox="-7 -2 15 15" style="display: inline;" xmlns="http://www.w3.org/2000/svg"><polygon stroke="black" fill="black" points="${generateInsertionPoint(0)}"></svg>insertion</polygons></svg></li>`;
+    returnString += `<li><svg width="15" top="3" viewBox="-7 -2 15 15" style="display: inline;" xmlns="http://www.w3.org/2000/svg"><polygon stroke="black" fill="black" points="${generateDelinsPoint(0)}"></svg>delins </polygons></svg></li>`;
     returnString += `</ul></td>`;
     returnString += `<td><ul>`;
     returnString += `<li>transcript ablation </li>`;

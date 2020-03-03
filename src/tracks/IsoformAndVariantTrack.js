@@ -1,6 +1,8 @@
 import * as d3 from "d3";
 import {calculateNewTrackPosition, checkSpace, findRange} from '../RenderFunctions';
 import {
+  generateDelinsPoint,
+  generateInsertionPoint,
   generateSnvPoints,
   generateVariantDataBinsAndDataSets,
   getColorsForConsequences,
@@ -197,7 +199,7 @@ export default class IsoformAndVariantTrack {
           isPoints = true;
             variantContainer.append('polygon')
               .attr('class', 'variant-insertion')
-              .attr('points', insertion_points(x(fmin)))
+              .attr('points', generateInsertionPoint(x(fmin)))
               .attr('fill', consequenceColor)
               .attr('x', x(fmin))
               .attr('transform', 'translate(0,'+VARIANT_HEIGHT+')')
@@ -225,7 +227,7 @@ export default class IsoformAndVariantTrack {
           isPoints=true;
           variantContainer.append('polygon')
             .attr('class', 'variant-delins')
-            .attr('points', delins_points(x(fmin)))
+            .attr('points', generateDelinsPoint(x(fmin)))
             .attr('x', x(fmin))
             .attr('transform', 'translate(0,0)')
             .attr('fill', consequenceColor)
