@@ -1,14 +1,18 @@
-import {getColorForConsequence} from "./ConsequenceService";
+import {CONSEQUENCES_ENUM, getColorForConsequence} from "./ConsequenceService";
 import {generateDelinsPoint, generateInsertionPoint, generateSnvPoints} from "./VariantService";
 
 function drawDeletion  (color,label) {
     return `<svg width="15" top="3" viewBox="0 -2 15 15" style="display: inline;" xmlns="http://www.w3.org/2000/svg"><rect fill="${color}" stroke="none" height="10" width="10"></svg>${label}</polygons></svg>`;
 };
 
-export function createLegendBox() {
-    const isoformString = generateSnvPoints(0);
-    console.log(isoformString)
+function drawDeletionForConsequence  (consequencesName) {
+    console.log('name',consequencesName)
+    // let consequence = CONSEQUENCES_ENUM[consequencesName];
+    // console.log(consequnece,Object.getOwnPropertyNames(consequnece),Object.getOwnPropertyNames(CONSEQUENCES_ENUM))
+    return drawDeletion(CONSEQUENCES_ENUM[consequencesName].color,consequencesName.replace(/_/g," "));
+};
 
+export function createLegendBox() {
     let returnString = `<table><tbody>`;
     returnString += `<tr>`;
     returnString += `<td align="center" valign="top"><u><b>Variant types</b></u></td>`;
@@ -22,29 +26,29 @@ export function createLegendBox() {
     returnString += `<li><svg width="15" top="3" viewBox="-7 -2 15 15" style="display: inline;" xmlns="http://www.w3.org/2000/svg"><polygon stroke="black" fill="black" points="${generateDelinsPoint(0)}"></svg>delins </polygons></svg></li>`;
     returnString += `</ul></td>`;
     returnString += `<td valign="top" ><ul style="list-style-type:none;">`;
-    returnString += `<li>${drawDeletion('red','transcript ablation')}</li>`;
-    returnString += `<li>${drawDeletion('orange','splice acceptor variant')}</li>`;
-    returnString += `<li>${drawDeletion('orange','splice donor variant')}</li>`;
-    returnString += `<li>${drawDeletion('red','stop gained')}</li>`;
-    returnString += `<li>${drawDeletion('purple','frameshift variant')}</li>`;
-    returnString += `<li>${drawDeletion('red','stop lost')}</li>`;
-    returnString += `<li>${drawDeletion('yellow','start lost')}</li>`;
-    returnString += `<li>${drawDeletion('lightpurple','inframe insertion')}</li>`;
-    returnString += `<li>${drawDeletion('lightpurple','inframe deletion')}</li>`;
-    returnString += `<li>${drawDeletion('yellow','missense variant')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('transcript_ablation')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('splice_acceptor_variant')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('splice_donor_variant')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('stop_gained')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('frameshift_variant')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('stop_lost')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('start_lost')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('inframe_insertion')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('inframe_deletion')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('missense_variant')}</li>`;
     returnString += `<li>splice acceptor variant</li>`;
     returnString += `</ul></td>`;
     returnString += `<td valign="top" ><ul style="list-style-type:none;">`;
-    returnString += `<li>${drawDeletion('red','protein altering variant')}</li>`;
-    returnString += `<li>${drawDeletion('orange','splice region variant')}</li>`;
-    returnString += `<li>${drawDeletion('green','start retained variant')}</li>`;
-    returnString += `<li>${drawDeletion('green','stop retained variant')}</li>`;
-    returnString += `<li>${drawDeletion('green','synonymous retained variant')}</li>`;
-    returnString += `<li>${drawDeletion('darkgreen','coding sequence variant')}</li>`;
-    returnString += `<li>${drawDeletion('lightblue','5 prime UTR variant')}</li>`;
-    returnString += `<li>${drawDeletion('lightblue','3 prime UTR variant')}</li>`;
-    returnString += `<li>${drawDeletion('darkblue','intron variant')}</li>`;
-    returnString += `<li>${drawDeletion('green','non coding transcript variant')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('protein_altering_variant')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('splice_region_variant')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('start_retained_variant')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('stop_retained_variant')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('synonymous_variant')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('coding_sequence_variant')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('five_prime_UTR_variant')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('three_prime_UTR_variant')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('intron_variant')}</li>`;
+    returnString += `<li>${drawDeletionForConsequence('non_coding_transcript_variant')}</li>`;
     returnString += `</ul></td>`;
     returnString += `</tr>`;
     returnString += `<tr>`;
