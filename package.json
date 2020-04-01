@@ -21,7 +21,7 @@
     "pack": "rm -rf dist && npm run rmdsstore && npm run build && npm pack"
   },
   "dependencies": {
-    "d3": "^5.7.0",
+    "d3": "^5.15.1",
     "d3-tip": "^0.9.1"
   },
   "devDependencies": {
