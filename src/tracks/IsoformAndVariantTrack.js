@@ -9,6 +9,7 @@ import {
   getVariantDescriptions,
   getVariantSymbol,
   renderVariantDescriptions,
+  getVariantTrackPositions,
 } from "../services/VariantService";
 import {renderTrackDescription} from "../services/TrackService";
 // import {description} from "d3/dist/package";
@@ -43,6 +44,9 @@ export default class IsoformAndVariantTrack {
     let width = this.width;
     let showVariantLabel = this.showVariantLabel;
     let binRatio = this.binRatio;
+
+    let distinctVariants= getVariantTrackPositions(variantData);
+    let numVariantTracks=distinctVariants.length;
 
 
     let UTR_feats = ["UTR", "five_prime_UTR", "three_prime_UTR"];
@@ -89,7 +93,7 @@ export default class IsoformAndVariantTrack {
     let variantContainer = viewer.append("g").attr("class", "variants track")
       .attr("transform", "translate(0,22.5)");
     //Append Invisible Rect to give space properly if only one track exists.
-    variantContainer.append('rect').style("opacity", 0).attr("height", VARIANT_TRACK_HEIGHT).attr("width",width);
+    //variantContainer.append('rect').style("opacity", 0).attr("height", VARIANT_HEIGHT*numVariantTracks).attr("width",width);
 
     //need to build a new sortWeight since these can be dynamic
     let sortWeight = {};
@@ -138,11 +142,11 @@ export default class IsoformAndVariantTrack {
         let descriptionHtml = renderVariantDescriptions(descriptions);
         const consequenceColor = getColorsForConsequences(descriptions)[0];
         const width = Math.ceil(x(fmax)-x(fmin)) < MIN_WIDTH ? MIN_WIDTH : Math.ceil(x(fmax)-x(fmin));
-        if (type.toLowerCase() === 'deletion' || type.toLowerCase() === 'mnv') {
+        if (type.toLowerCase() === 'deletion') {
           variantContainer.append('rect')
             .attr('class', 'variant-deletion')
             .attr('x', x(fmin))
-            .attr('transform', 'translate(0,0)')
+            .attr('transform', 'translate(0,'+VARIANT_HEIGHT*distinctVariants.indexOf("deletion")+')')
             .attr('z-index', 30)
             .attr('fill', consequenceColor)
             .attr('height', VARIANT_HEIGHT)
@@ -173,7 +177,7 @@ export default class IsoformAndVariantTrack {
             .attr('points', generateSnvPoints(x(fmin)))
             .attr('fill', consequenceColor)
             .attr('x', x(fmin))
-            .attr('transform', 'translate(0,'+VARIANT_HEIGHT+')')
+            .attr('transform', 'translate(0,'+VARIANT_HEIGHT*distinctVariants.indexOf("snv")+')')
             .attr('z-index', 30)
             .on("click", d => {
               renderTooltipDescription(tooltipDiv,descriptionHtml,closeToolTip);
@@ -201,7 +205,7 @@ export default class IsoformAndVariantTrack {
               .attr('points', generateInsertionPoint(x(fmin)))
               .attr('fill', consequenceColor)
               .attr('x', x(fmin))
-              .attr('transform', 'translate(0,'+VARIANT_HEIGHT+')')
+              .attr('transform', 'translate(0,'+VARIANT_HEIGHT*distinctVariants.indexOf("insertion")+')')
               .attr('z-index', 30)
               .on("click", d => {
                 renderTooltipDescription(tooltipDiv,descriptionHtml,closeToolTip);
@@ -222,13 +226,13 @@ export default class IsoformAndVariantTrack {
                   .style("opacity",0);
               })
               .datum({fmin: fmin, fmax: fmax, variant: symbol_string+fmin});
-        } else if (type.toLowerCase() === 'delins' || type.toLowerCase() === 'substitution' || type.toLowerCase() === 'indel') {
+        } else if (type.toLowerCase() === 'delins' || type.toLowerCase() === 'substitution' || type.toLowerCase() === 'indel' || type.toLowerCase() === 'mnv') {
           isPoints=true;
           variantContainer.append('polygon')
             .attr('class', 'variant-delins')
             .attr('points', generateDelinsPoint(x(fmin)))
             .attr('x', x(fmin))
-            .attr('transform', 'translate(0,0)')
+            .attr('transform', 'translate(0,'+VARIANT_HEIGHT*distinctVariants.indexOf("delins")+')')
             .attr('fill', consequenceColor)
             .attr('z-index', 30)
             .on("click", d => {
@@ -264,13 +268,13 @@ export default class IsoformAndVariantTrack {
             label_offset = x(fmin);}
 
           const symbol_string_length = symbol_string.length ? symbol_string.length : 1;
-
+          let label_height=VARIANT_HEIGHT*numVariantTracks+15;
           let variant_label = variantContainer.append('text')
             .attr('class', 'variantLabel')
             .attr('fill', consequenceColor)
             .attr('opacity', 0)
             .attr('height', ISOFORM_TITLE_HEIGHT)
-            .attr("transform", "translate("+label_offset+",45)")
+            .attr("transform", "translate("+label_offset+","+label_height+")")
             .html(symbol_string)
             .on("click", d => {
               renderTooltipDescription(tooltipDiv,descriptionHtml,closeToolTip);
