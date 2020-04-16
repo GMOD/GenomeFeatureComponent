@@ -75,6 +75,7 @@ export default class IsoformAndVariantTrack {
     const SNV_HEIGHT = 10;
     const SNV_WIDTH = 10;
     const VARIANT_TRACK_HEIGHT = 40;//Not sure if this needs to be dynamic or not
+    const LABEL_PADDING=22.5;
 
     const insertion_points = (x) => {
       return `${x-(SNV_WIDTH/2.0)},${SNV_HEIGHT} ${x},0 ${x+(SNV_WIDTH/2.0)},${SNV_HEIGHT}`;
@@ -268,7 +269,7 @@ export default class IsoformAndVariantTrack {
             label_offset = x(fmin);}
 
           const symbol_string_length = symbol_string.length ? symbol_string.length : 1;
-          let label_height=VARIANT_HEIGHT*numVariantTracks+15;
+          let label_height=VARIANT_HEIGHT*numVariantTracks+LABEL_PADDING;
           let variant_label = variantContainer.append('text')
             .attr('class', 'variantLabel')
             .attr('fill', consequenceColor)
