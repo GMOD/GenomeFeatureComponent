@@ -129,6 +129,7 @@ export default class IsoformAndVariantTrack {
           .duration(100)
           .style("opacity", 10)
           .style("visibility","hidden");
+        variantContainer.selectAll(".click-highlight").remove();
     };
     // **************************************
     // Seperate isoform and variant render
@@ -156,6 +157,15 @@ export default class IsoformAndVariantTrack {
             .attr('width', width)
             .on("click", d => {
               renderTooltipDescription(tooltipDiv,descriptionHtml,closeToolTip);
+              let viewer_height= viewer.node().getBBox().height-22.5;
+              variantContainer.append('rect')
+                .attr("class","click-highlight")
+                .attr("x", x(fmin))
+                .attr("width", width)
+                .attr("height", viewer_height)
+                .attr("fill", 'yellow')
+                .attr("opacity", 0.8)
+                .lower();
             })
             .on("mouseover", function(d){
               let theVariant = d.variant;
@@ -185,6 +195,15 @@ export default class IsoformAndVariantTrack {
             .attr('z-index', 30)
             .on("click", d => {
               renderTooltipDescription(tooltipDiv,descriptionHtml,closeToolTip);
+              let viewer_height= viewer.node().getBBox().height-22.5;
+              variantContainer.append('rect')
+                .attr("class","click-highlight")
+                .attr("x", x(fmin)-1.5)
+                .attr("width", 3)
+                .attr("height", viewer_height)
+                .attr("fill", 'yellow')
+                .attr("opacity", 0.8)
+                .lower();
             })
             .on("mouseover", function(d){
               let theVariant = d.variant;
@@ -214,6 +233,15 @@ export default class IsoformAndVariantTrack {
               .attr('z-index', 30)
               .on("click", d => {
                 renderTooltipDescription(tooltipDiv,descriptionHtml,closeToolTip);
+                let viewer_height= viewer.node().getBBox().height-22.5;
+                variantContainer.append('rect')
+                  .attr("class","click-highlight")
+                  .attr("x", x(fmin)-1.5)
+                  .attr("width", 3)
+                  .attr("height", viewer_height)
+                  .attr("fill", 'yellow')
+                  .attr("opacity", 0.8)
+                  .lower();
               })
               .on("mouseover", function(d){
                 let theVariant = d.variant;
@@ -243,6 +271,15 @@ export default class IsoformAndVariantTrack {
             .attr('z-index', 30)
             .on("click", d => {
               renderTooltipDescription(tooltipDiv,descriptionHtml,closeToolTip);
+              let viewer_height= viewer.node().getBBox().height-22.5;
+              variantContainer.append('rect')
+                .attr("class","click-highlight")
+                .attr("x", x(fmin)-1.5)
+                .attr("width", 3)
+                .attr("height", viewer_height)
+                .attr("fill", 'yellow')
+                .attr("opacity", 0.8)
+                .lower();
             })
             .on("mouseover", function(d){
               let theVariant = d.variant;
