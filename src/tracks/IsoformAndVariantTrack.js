@@ -156,6 +156,7 @@ export default class IsoformAndVariantTrack {
             .attr('height', VARIANT_HEIGHT)
             .attr('width', width)
             .on("click", d => {
+              variantContainer.selectAll(".click-highlight").remove();
               renderTooltipDescription(tooltipDiv,descriptionHtml,closeToolTip);
               let viewer_height= viewer.node().getBBox().height-22.5;
               variantContainer.append('rect')
@@ -194,6 +195,7 @@ export default class IsoformAndVariantTrack {
             .attr('transform', 'translate(0,'+VARIANT_HEIGHT*distinctVariants.indexOf("snv")+')')
             .attr('z-index', 30)
             .on("click", d => {
+              variantContainer.selectAll(".click-highlight").remove();
               renderTooltipDescription(tooltipDiv,descriptionHtml,closeToolTip);
               let viewer_height= viewer.node().getBBox().height-22.5;
               variantContainer.append('rect')
@@ -232,6 +234,7 @@ export default class IsoformAndVariantTrack {
               .attr('transform', 'translate(0,'+VARIANT_HEIGHT*distinctVariants.indexOf("insertion")+')')
               .attr('z-index', 30)
               .on("click", d => {
+                variantContainer.selectAll(".click-highlight").remove();
                 renderTooltipDescription(tooltipDiv,descriptionHtml,closeToolTip);
                 let viewer_height= viewer.node().getBBox().height-22.5;
                 variantContainer.append('rect')
@@ -270,6 +273,7 @@ export default class IsoformAndVariantTrack {
             .attr('fill', consequenceColor)
             .attr('z-index', 30)
             .on("click", d => {
+              variantContainer.selectAll(".click-highlight").remove();
               renderTooltipDescription(tooltipDiv,descriptionHtml,closeToolTip);
               let viewer_height= viewer.node().getBBox().height-22.5;
               variantContainer.append('rect')
@@ -621,6 +625,7 @@ export default class IsoformAndVariantTrack {
   }
 
   renderTooltipDescription(tooltipDiv, descriptionHtml,closeFunction) {
+
     tooltipDiv.transition()
       .duration(200)
       .style("width", 'auto')
