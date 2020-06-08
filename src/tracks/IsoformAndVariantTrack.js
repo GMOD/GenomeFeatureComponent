@@ -624,7 +624,6 @@ export default class IsoformAndVariantTrack {
   }
 
   renderTooltipDescription(tooltipDiv, descriptionHtml,closeFunction) {
-
     tooltipDiv.transition()
       .duration(200)
       .style("width", 'auto')
