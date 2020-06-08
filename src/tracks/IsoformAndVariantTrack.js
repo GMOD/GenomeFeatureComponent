@@ -129,7 +129,6 @@ export default class IsoformAndVariantTrack {
           .duration(100)
           .style("opacity", 10)
           .style("visibility","hidden");
-        variantContainer.selectAll(".click-highlight").remove();
     };
     // **************************************
     // Seperate isoform and variant render
