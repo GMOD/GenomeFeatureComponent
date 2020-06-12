@@ -376,7 +376,6 @@ export function getVariantDescription(variant){
       returnObject.allele_of_genes =  variant.allele_of_genes;
     }
   }
-  console.log('has alleles',variant,variant.allele_ids)
   if(variant.allele_ids){
     if(variant.allele_ids.values &&  variant.allele_ids.values.length>0){
       returnObject.allele_ids =  (Array.isArray(variant.allele_ids.values) ? variant.allele_ids.values.join(' ') : variant.allele_ids.values).replace(/"/g,"");
