@@ -339,8 +339,9 @@ export function getColorsForConsequences(descriptions){
 
 export function getConsequence(variant){
   let consequence = 'UNKNOWN';
+
   if(variant.geneLevelConsequence && variant.geneLevelConsequence.values && variant.geneLevelConsequence.values.length > 0){
-    consequence = (Array.isArray(variant.geneLevelConsequence.values) ? variant.geneLevelConsequence.values.join(' ') : variant.geneLevelConsequence.values).replace(/"/g,"");
+    consequence = variant.geneLevelConsequence.values[0].replace(/\|/g," ").replace(/\"/g,"");
   }
   return consequence;
 }
