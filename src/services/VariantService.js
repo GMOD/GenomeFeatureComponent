@@ -16,7 +16,7 @@ export function generateInsertionPoint(x) {
 
 export function generateDelinsPoint(x)  {
   return `${x-(SNV_WIDTH/2.0)},${SNV_HEIGHT} ${x+(SNV_WIDTH/2.0)},${SNV_HEIGHT} ${x-(SNV_WIDTH/2.0)},${0} ${x+(SNV_WIDTH/2.0)},${0}`;
-};
+}
 
 export function getDescriptionDimensions(description){
   const descriptionHeight = Object.keys(description).length;
@@ -339,8 +339,9 @@ export function getColorsForConsequences(descriptions){
 
 export function getConsequence(variant){
   let consequence = 'UNKNOWN';
+
   if(variant.geneLevelConsequence && variant.geneLevelConsequence.values && variant.geneLevelConsequence.values.length > 0){
-    consequence = (Array.isArray(variant.geneLevelConsequence.values) ? variant.geneLevelConsequence.values.join(' ') : variant.geneLevelConsequence.values).replace(/"/g,"");
+    consequence = variant.geneLevelConsequence.values[0].replace(/\|/g," ").replace(/\"/g,"");
   }
   return consequence;
 }
