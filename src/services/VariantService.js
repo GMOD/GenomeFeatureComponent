@@ -318,7 +318,7 @@ export function getVariantAlleles(variant){
   let returnObj=[];
 
   variant.variants.forEach((val) => {
-    let allele = val.allele_symbols.values[0].replace(/"/g,"");
+    let allele = val.allele_ids.values[0].replace(/"/g,"");
     returnObj.push(allele);
   });
   return returnObj;
