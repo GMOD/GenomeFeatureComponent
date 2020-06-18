@@ -322,7 +322,7 @@ export default class IsoformAndVariantTrack {
             .attr('opacity', 0)
             .attr('height', ISOFORM_TITLE_HEIGHT)
             .attr("transform", "translate("+label_offset+","+label_height+")")
-            .html(symbol_string)
+            .text(symbol_string)
             .on("click", d => {
               renderTooltipDescription(tooltipDiv,descriptionHtml,closeToolTip);
             })
