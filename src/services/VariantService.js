@@ -414,19 +414,8 @@ export function getVariantSymbol(variant){
       return getVariantSymbol(variant.variants[0]);
     }
   }
-  // let symbol = variant.name ;
+  // note that using the html version of this gets swallowed in the text svg
   if(variant.allele_symbols_text && variant.allele_symbols_text.values){
-    // let symbol = variant.name ;
-    // if(variant.symbol && !variant.symbol.values){
-    //   symbol = variant.symbol;
-    // }
-    // else
-    // if(variant.symbol && variant.symbol.values && variant.symbol.values.length>0){
-    //   symbol = variant.symbol.values[0];
-    // }
-    // return  (symbol.length>20 ? symbol.substr(0,20) : symbol).replace(/"/g,"");
-    // symbol = symbol.replace (/<sup>/," ");
-    // return symbol.replace(/"|<\/sup>/g,"");
     if(variant.allele_symbols_text.values[0].split(",").length>1){
       let symbol = variant.allele_symbols_text.values[0].split(",").length;
       return symbol;
