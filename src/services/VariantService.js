@@ -453,13 +453,10 @@ export function getVariantSymbol(variant){
   // note that using the html version of this gets swallowed in the text svg
   if(variant.allele_symbols_text && variant.allele_symbols_text.values){
     if(variant.allele_symbols_text.values[0].split(",").length>1){
-      let symbol = variant.allele_symbols_text.values[0].split(",").length;
-      return symbol;
+      return variant.allele_symbols_text.values[0].split(",").length;
     }
     else{
-      let symbol = variant.allele_symbols_text.values[0];
-      symbol = symbol.replace(/"/g,"")
-      return symbol;
+      return variant.allele_symbols_text.values[0].replace(/"/g,"");
     }
 
 
