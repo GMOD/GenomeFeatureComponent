@@ -16,7 +16,7 @@ export function generateInsertionPoint(x) {
 
 export function generateDelinsPoint(x)  {
   return `${x-(SNV_WIDTH/2.0)},${SNV_HEIGHT} ${x+(SNV_WIDTH/2.0)},${SNV_HEIGHT} ${x-(SNV_WIDTH/2.0)},${0} ${x+(SNV_WIDTH/2.0)},${0}`;
-};
+}
 
 export function getDescriptionDimensions(description){
   const descriptionHeight = Object.keys(description).length;
@@ -318,7 +318,7 @@ export function getVariantAlleles(variant){
   let returnObj=[];
 
   variant.variants.forEach((val) => {
-    let allele = val.allele_symbols.values[0].replace(/"/g,"");
+    let allele = val.allele_ids.values[0].replace(/"/g,"");
     returnObj.push(allele);
   });
   return returnObj;
@@ -339,8 +339,9 @@ export function getColorsForConsequences(descriptions){
 
 export function getConsequence(variant){
   let consequence = 'UNKNOWN';
+
   if(variant.geneLevelConsequence && variant.geneLevelConsequence.values && variant.geneLevelConsequence.values.length > 0){
-    consequence = (Array.isArray(variant.geneLevelConsequence.values) ? variant.geneLevelConsequence.values.join(' ') : variant.geneLevelConsequence.values).replace(/"/g,"");
+    consequence = variant.geneLevelConsequence.values[0].replace(/\|/g," ").replace(/\"/g,"");
   }
   return consequence;
 }
@@ -413,22 +414,19 @@ export function getVariantSymbol(variant){
       return getVariantSymbol(variant.variants[0]);
     }
   }
-  // let symbol = variant.name ;
-  if(variant.allele_symbols && variant.allele_symbols.values){
-    // let symbol = variant.name ;
-    // if(variant.symbol && !variant.symbol.values){
-    //   symbol = variant.symbol;
-    // }
-    // else
-    // if(variant.symbol && variant.symbol.values && variant.symbol.values.length>0){
-    //   symbol = variant.symbol.values[0];
-    // }
-    // return  (symbol.length>20 ? symbol.substr(0,20) : symbol).replace(/"/g,"");
-    // symbol = symbol.replace (/<sup>/," ");
-    // return symbol.replace(/"|<\/sup>/g,"");
-    let symbol = variant.allele_symbols.values[0]
-    symbol = symbol.replace(/"/g,"")
-    return symbol;
+  // note that using the html version of this gets swallowed in the text svg
+  if(variant.allele_symbols_text && variant.allele_symbols_text.values){
+    if(variant.allele_symbols_text.values[0].split(",").length>1){
+      let symbol = variant.allele_symbols_text.values[0].split(",").length;
+      return symbol;
+    }
+    else{
+      let symbol = variant.allele_symbols_text.values[0];
+      symbol = symbol.replace(/"/g,"")
+      return symbol;
+    }
+
+
   }
   return undefined
 }
