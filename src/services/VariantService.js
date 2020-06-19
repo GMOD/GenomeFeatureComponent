@@ -412,12 +412,12 @@ export function getVariantSymbolDetail(variant){
     }
   }
   // note that using the html version of this gets swallowed in the text svg
-  if(variant.allele_symbols_text && variant.allele_symbols_text.values){
+  if(variant.allele_symbols && variant.allele_symbols.values){
 
-    if(variant.allele_symbols_text.values[0].split(",").length>1){
+    if(variant.allele_symbols.values[0].split(",").length>1){
       try{
         let text_array = [];
-        const clean_text = variant.allele_symbols_text.values[0].replace(/"|\[|\]/g,'')
+        const clean_text = variant.allele_symbols.values[0].replace(/"|\[|\]/g,'')
         const clean_ids = variant.allele_ids.values[0].replace(/"|\[|\]/g,'')
         const clean_text_array = clean_text.split(",")
         const clean_id_array = clean_ids.split(",")
@@ -429,11 +429,12 @@ export function getVariantSymbolDetail(variant){
       }
       catch(e){
         console.error(e)
-        return variant.allele_symbols_text.values[0].split(",").length
+        return variant.allele_symbols.values[0].split(",").length
       }
     }
     else{
-      return variant.allele_symbols_text.values[0].replace(/"/g,"") + '(' +variant.allele_ids.values[0].replace(/"|\[|\]/g,'') +')'
+      const clean_text = variant.allele_symbols.values[0].replace(/"/g,"")
+      return clean_text + '(' +variant.allele_ids.values[0].replace(/"|\[|\]/g,'') +')'
     }
 
 
