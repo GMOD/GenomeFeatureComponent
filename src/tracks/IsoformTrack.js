@@ -39,6 +39,7 @@ export default class IsoformTrack {
   // TODO: Potentially seperate this large section of code
     // for both testing/extensibility
     DrawTrack() {
+
         let data = this.trackData;
         let viewer = this.viewer;
         let width = this.width;
@@ -235,9 +236,9 @@ export default class IsoformTrack {
                             if (fmax_display < 0 || fmax_display < featureChild.fmax) {
                                 fmax_display = featureChild.fmax;
                             }
-
-                            // have to sort this so we draw the exons BEFORE the CDS
-                            featureChild.children = featureChild.children.sort(function (a, b) {
+                            if(featureChild.children){
+                              // have to sort this so we draw the exons BEFORE the CDS
+                              featureChild.children = featureChild.children.sort(function (a, b) {
 
                                 let sortAValue = sortWeight[a.type];
                                 let sortBValue = sortWeight[b.type];
@@ -253,9 +254,9 @@ export default class IsoformTrack {
                                 }
                                 // NOTE: type not found and weighted
                                 return a.type - b.type;
-                            });
+                              });
 
-                            featureChild.children.forEach(function (innerChild) {
+                              featureChild.children.forEach(function (innerChild) {
                                 let innerType = innerChild.type;
                                 if (exon_feats.indexOf(innerType) >= 0) {
                                     isoform.append('rect')
@@ -298,6 +299,7 @@ export default class IsoformTrack {
                                     ;
                                 }
                             });
+                              }
                             row_count += 1;
                         }
                         if (row_count === MAX_ROWS) {
