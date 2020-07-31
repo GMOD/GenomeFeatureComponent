@@ -175,7 +175,10 @@ export default class IsoformTrack {
                                 renderTooltipDescription(tooltipDiv,renderTrackDescription(featureChild),closeToolTip);
                               })
                             ;
-                            let text_string = featureChild.name + " (" + feature.name + ")";
+                            let text_string = featureChild.name ;
+                            if(feature.name !== featureChild.name){
+                              text_string +=  " (" + feature.name + ")";
+                            }
                             let text_label = isoform.append('text')
                                 .attr('class', 'transcriptLabel')
                                 .attr('fill', selected ? 'sandybrown' : 'gray')
