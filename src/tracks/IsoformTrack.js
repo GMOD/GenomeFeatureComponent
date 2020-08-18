@@ -11,6 +11,8 @@ export default class IsoformTrack {
         this.width = width;
         this.height = height;
         this.transcriptTypes = transcriptTypes;
+        this.start = track["start"];
+        this.end = track["end"];
     }
 
   renderTooltipDescription(tooltipDiv, descriptionHtml,closeFunction){
@@ -55,8 +57,8 @@ export default class IsoformTrack {
         let display_feats = this.transcriptTypes;
         let dataRange = findRange(data, display_feats);
 
-        let view_start = dataRange.fmin;
-        let view_end = dataRange.fmax;
+        let view_start = this.start;
+        let view_end = this.end;
         let exon_height = 10; // will be white / transparent
         let cds_height = 10; // will be colored in
         let isoform_height = 40; // height for each isoform
@@ -131,9 +133,14 @@ export default class IsoformTrack {
                     return a - b;
                 });
 
+
                 // For each isoform..
                 featureChildren.forEach(function (featureChild) {
-                    //
+                    //skip feats not within bounds.
+                    if(featureChild.fmin<view_start || featureChild.fmax>view_end){
+                      console.log(featureChild.fmax, view_start);
+                      return;
+                    }
                     let featureType = featureChild.type;
 
                     if (display_feats.indexOf(featureType) >= 0) {
