@@ -69,6 +69,7 @@ export default class GenomeFeatureViewer {
              ids.forEach((val) => {
                if (selectedAlleles.includes(val)){
                  returnVal=true;
+               }
              })
            }
            return returnVal;
