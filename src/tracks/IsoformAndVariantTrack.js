@@ -22,12 +22,13 @@ let MAX_ROWS = 9;
 
 export default class IsoformAndVariantTrack {
 
-  constructor(viewer, track, height, width, transcriptTypes, variantTypes,showVariantLabel,variantFilter,binRatio) {
+  constructor(viewer, track, height, width, transcriptTypes, variantTypes,showVariantLabel,variantFilter,binRatio,isoformFilter) {
     this.trackData = {};
     this.variantData = {};
     this.viewer = viewer;
     this.width = width;
     this.variantFilter = variantFilter;
+    this.isoformFilter = isoformFilter;
     this.height = height;
     this.transcriptTypes = transcriptTypes;
     this.variantTypes = variantTypes;
@@ -39,7 +40,8 @@ export default class IsoformAndVariantTrack {
   // TODO: Potentially seperate this large section of code
   // for both testing/extensibility
   DrawTrack() {
-    let isoformData = this.trackData;
+    console.log(this.isoformFilter);
+    let isoformData = this.filterIsoformData(this.trackData, this.isoformFilter);
     let variantData = this.filterVariantData(this.variantData,this.variantFilter);
     let viewer = this.viewer;
     let width = this.width;
@@ -50,6 +52,8 @@ export default class IsoformAndVariantTrack {
     let source = this.trackData[0].source;
     let chr = this.trackData[0].seqId;
 
+    //TESTY TEST
+    console.log(isoformData);
 
     let UTR_feats = ["UTR", "five_prime_UTR", "three_prime_UTR"];
     let CDS_feats = ["CDS"];
@@ -630,6 +634,27 @@ export default class IsoformAndVariantTrack {
       console.warn('problem filtering variant data',variantData,variantFilter,e);
     }
   }
+
+  filterIsoformData(trackData, isoformFilter) {
+    if(isoformFilter.length===0) return trackData ;
+    try {
+      return trackData.filter(v => {
+        let returnVal = false;
+        console.log(v.id);
+        try {
+          let gene_id = v.id;
+          if(isoformFilter.indexOf(gene_id) >= 0)
+            {returnVal = true}
+        } catch (e) {
+          console.error('error processing filter with so returning anyway',isoformFilter,v,e)
+          returnVal = true;
+        }
+        return returnVal;
+      });
+    } catch (e) {
+      console.warn('problem filtering isoform data',isoformData,variantFilter,e);
+    }
+  }//Isoform Filter
 
   renderTooltipDescription(tooltipDiv, descriptionHtml,closeFunction) {
     tooltipDiv.transition()

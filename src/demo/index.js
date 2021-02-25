@@ -5,7 +5,7 @@ import {TRACK_TYPE} from "../tracks/TrackTypeEnum";
 // const BASE_URL = 'http://54.91.83.120:8080/apollo';
 // const BASE_URL = 'https://agr-apollo.berkeleybop.io/apollo';
 //const BASE_URL = 'https://build.alliancegenome.org/apollo';
-const BASE_URL = 'https://stage.alliancegenome.org/apollo';
+const BASE_URL = 'https://build.alliancegenome.org/apollo';
 
 // Global View Example
 
@@ -15,8 +15,9 @@ const BASE_URL = 'https://stage.alliancegenome.org/apollo';
 //fishExamples();
 //ratExamples();
 //mouseExamples();
-flyExamples();
-covidExamples();
+//flyExamples();
+//covidExamples();
+currentExamples();
 
 function getTranscriptTypes(){
  return ['mRNA', 'ncRNA', 'piRNA', 'lincRNA', 'miRNA', 'pre_miRNA', 'snoRNA', 'lnc_RNA', 'tRNA', 'snRNA', 'rRNA', 'ARS', 'antisense_RNA', 'C_gene_segment', 'V_gene_segment', 'pseudogene_attribute','snoRNA_gene','polypeptide_region','mature_protein_region'];
@@ -24,6 +25,11 @@ function getTranscriptTypes(){
 
 function covidExamples(){
   createCoVExample("NC_045512.2:17894..28259", "SARS-CoV-2", "covidExample1", TRACK_TYPE.ISOFORM, false);
+}
+
+function currentExamples(){
+  createExample("X:2023822..2042311", "fly", "viewerActnFly", TRACK_TYPE.ISOFORM_AND_VARIANT, false,["FB:FBal0212726"],['FBgn0000667','FBgn0003964']);
+  createExample("8:57320983..57324517", "mouse", "viewerHand2Mouse", TRACK_TYPE.ISOFORM_AND_VARIANT, false);
 }
 
 function flyExamples() {
@@ -90,7 +96,7 @@ function isoformExamples() {
     createIsoformExample("25:15029041..15049781", "zebrafish", "zebrafishExampleIsoformOnly", TRACK_TYPE.ISOFORM, true);
 }
 
-function createExample(range, genome, divId, type, showLabel, variantFilter) {
+function createExample(range, genome, divId, type, showLabel, variantFilter,isoformFilter) {
     const chromosome = range.split(":")[0];
     const [start, end] = range.split(":")[1].split("..");
     const ratio = 0.01;
@@ -101,6 +107,7 @@ function createExample(range, genome, divId, type, showLabel, variantFilter) {
         "end": end,
         "showVariantLabel": showLabel,
       "transcriptTypes": getTranscriptTypes(),
+      "isoformFilter": isoformFilter || [],
       "variantFilter": variantFilter || [],
         "binRatio": ratio,
         "tracks": [
@@ -122,6 +129,7 @@ function createExample(range, genome, divId, type, showLabel, variantFilter) {
             },
         ]
     };
+    console.log(configGlobal1);
     const gfc = new GenomeFeatureViewer(configGlobal1, `#${divId}`, 900, 500);
 
     const closeButton = document.getElementById(divId + 'CloseButton');
