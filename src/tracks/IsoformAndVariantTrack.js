@@ -18,7 +18,7 @@ import {ApolloService} from "../services/ApolloService";
 let apolloService = new ApolloService();
 
 // TODO: make configurable and a const / default
-let MAX_ROWS = 9;
+//let MAX_ROWS = 9;
 
 export default class IsoformAndVariantTrack {
 
@@ -40,8 +40,9 @@ export default class IsoformAndVariantTrack {
   // TODO: Potentially seperate this large section of code
   // for both testing/extensibility
   DrawTrack() {
-    console.log(this.isoformFilter);
-    let isoformData = this.filterIsoformData(this.trackData, this.isoformFilter);
+    let isoformFilter = this.isoformFilter;
+    //let isoformData = this.filterIsoformData(this.trackData, isoformFilter);
+    let isoformData= this.trackData;
     let variantData = this.filterVariantData(this.variantData,this.variantFilter);
     let viewer = this.viewer;
     let width = this.width;
@@ -51,9 +52,8 @@ export default class IsoformAndVariantTrack {
     let numVariantTracks=distinctVariants.length;
     let source = this.trackData[0].source;
     let chr = this.trackData[0].seqId;
-
-    //TESTY TEST
-    console.log(isoformData);
+    let MAX_ROWS = isoformFilter.length===0 ? 9 : 30;
+    console.log(MAX_ROWS,"MAX ROWS");
 
     let UTR_feats = ["UTR", "five_prime_UTR", "three_prime_UTR"];
     let CDS_feats = ["CDS"];
@@ -151,6 +151,9 @@ export default class IsoformAndVariantTrack {
         const consequenceColor = getColorsForConsequences(descriptions)[0];
         const width = Math.ceil(x(fmax)-x(fmin)) < MIN_WIDTH ? MIN_WIDTH : Math.ceil(x(fmax)-x(fmin));
         if (type.toLowerCase() === 'deletion') {
+          if(variant.variants.length>1){
+            //do things
+          }
           variantContainer.append('rect')
             .attr('class', 'variant-deletion')
             .attr('x', x(fmin))
@@ -375,6 +378,9 @@ export default class IsoformAndVariantTrack {
         // For each isoform..
         let warningRendered = false ;
         featureChildren.forEach(function (featureChild) {
+          if(!(isoformFilter.indexOf(featureChild.id) >= 0) && isoformFilter.length!==0){
+            return;
+          }
           //
           let featureType = featureChild.type;
 
@@ -640,11 +646,18 @@ export default class IsoformAndVariantTrack {
     try {
       return trackData.filter(v => {
         let returnVal = false;
-        console.log(v.id);
+        console.log(v.children, v.name);
         try {
-          let gene_id = v.id;
-          if(isoformFilter.indexOf(gene_id) >= 0)
-            {returnVal = true}
+          //The former gene filter
+          //let gene_id = v.id;
+          //if(isoformFilter.indexOf(gene_id) >= 0)
+          //  {returnVal = true}
+          let transcripts = v.children;
+          transcripts.forEach(function(transcript){
+            if(isoformFilter.indexOf(transcript.id) >= 0){
+              returnVal=true;
+            }
+          });
         } catch (e) {
           console.error('error processing filter with so returning anyway',isoformFilter,v,e)
           returnVal = true;
