@@ -151,9 +151,6 @@ export default class IsoformAndVariantTrack {
         const consequenceColor = getColorsForConsequences(descriptions)[0];
         const width = Math.ceil(x(fmax)-x(fmin)) < MIN_WIDTH ? MIN_WIDTH : Math.ceil(x(fmax)-x(fmin));
         if (type.toLowerCase() === 'deletion') {
-          if(variant.variants.length>1){
-            //do things
-          }
           variantContainer.append('rect')
             .attr('class', 'variant-deletion')
             .attr('x', x(fmin))
