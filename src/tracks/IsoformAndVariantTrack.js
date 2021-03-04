@@ -41,7 +41,6 @@ export default class IsoformAndVariantTrack {
   // for both testing/extensibility
   DrawTrack() {
     let isoformFilter = this.isoformFilter;
-    //let isoformData = this.filterIsoformData(this.trackData, isoformFilter);
     let isoformData= this.trackData;
     let variantData = this.filterVariantData(this.variantData,this.variantFilter);
     let viewer = this.viewer;
@@ -53,7 +52,6 @@ export default class IsoformAndVariantTrack {
     let source = this.trackData[0].source;
     let chr = this.trackData[0].seqId;
     let MAX_ROWS = isoformFilter.length===0 ? 9 : 30;
-    console.log(MAX_ROWS,"MAX ROWS");
 
     let UTR_feats = ["UTR", "five_prime_UTR", "three_prime_UTR"];
     let CDS_feats = ["CDS"];
@@ -637,34 +635,6 @@ export default class IsoformAndVariantTrack {
       console.warn('problem filtering variant data',variantData,variantFilter,e);
     }
   }
-
-  filterIsoformData(trackData, isoformFilter) {
-    if(isoformFilter.length===0) return trackData ;
-    try {
-      return trackData.filter(v => {
-        let returnVal = false;
-        console.log(v.children, v.name);
-        try {
-          //The former gene filter
-          //let gene_id = v.id;
-          //if(isoformFilter.indexOf(gene_id) >= 0)
-          //  {returnVal = true}
-          let transcripts = v.children;
-          transcripts.forEach(function(transcript){
-            if(isoformFilter.indexOf(transcript.id) >= 0){
-              returnVal=true;
-            }
-          });
-        } catch (e) {
-          console.error('error processing filter with so returning anyway',isoformFilter,v,e)
-          returnVal = true;
-        }
-        return returnVal;
-      });
-    } catch (e) {
-      console.warn('problem filtering isoform data',isoformData,variantFilter,e);
-    }
-  }//Isoform Filter
 
   renderTooltipDescription(tooltipDiv, descriptionHtml,closeFunction) {
     tooltipDiv.transition()
