@@ -151,6 +151,7 @@ export default class IsoformAndVariantTrack {
         if (type.toLowerCase() === 'deletion') {
           variantContainer.append('rect')
             .attr('class', 'variant-deletion')
+            .attr('id', 'variant-'+fmin)
             .attr('x', x(fmin))
             .attr('transform', 'translate(0,'+VARIANT_HEIGHT*distinctVariants.indexOf("deletion")+')')
             .attr('z-index', 30)
@@ -191,6 +192,7 @@ export default class IsoformAndVariantTrack {
           isPoints = true;
           variantContainer.append('polygon')
             .attr('class', 'variant-SNV')
+            .attr('id', 'variant-'+fmin)
             .attr('points', generateSnvPoints(x(fmin)))
             .attr('fill', consequenceColor)
             .attr('x', x(fmin))
@@ -230,6 +232,7 @@ export default class IsoformAndVariantTrack {
           isPoints = true;
             variantContainer.append('polygon')
               .attr('class', 'variant-insertion')
+              .attr('id', 'variant-'+fmin)
               .attr('points', generateInsertionPoint(x(fmin)))
               .attr('fill', consequenceColor)
               .attr('x', x(fmin))
@@ -269,6 +272,7 @@ export default class IsoformAndVariantTrack {
           isPoints=true;
           variantContainer.append('polygon')
             .attr('class', 'variant-delins')
+            .attr('id', 'variant-'+fmin)
             .attr('points', generateDelinsPoint(x(fmin)))
             .attr('x', x(fmin))
             .attr('transform', 'translate(0,'+VARIANT_HEIGHT*distinctVariants.indexOf("delins")+')')
