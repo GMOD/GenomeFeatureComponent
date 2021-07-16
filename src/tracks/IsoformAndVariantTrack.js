@@ -170,7 +170,7 @@ export default class IsoformAndVariantTrack {
           fmax=viewEnd;
         }
         if(fmin<viewStart){
-          fmin=viewEnd;
+          fmin=viewStart;
         }
 
         //Function to determine what row this goes on... not working yet.
