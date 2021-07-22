@@ -29,7 +29,7 @@ function covidExamples(){
 
 function currentExamples(){
   createExample("5:120503475..120682281", "rat", "viewerActnFly", TRACK_TYPE.ISOFORM_AND_VARIANT, false,[],[],[]);
-  //createExample("8:57320983..57324517", "mouse", "viewerHand2Mouse", TRACK_TYPE.ISOFORM_AND_VARIANT, false,[],['ENSMUST00000185635']);
+  createIsoformExample("5:120503475..120682281", "rat", "viewerHand2Mouse", TRACK_TYPE.ISOFORM, false);
   createExample("9:42732992..42873700", "zebrafish", "viewerHighlightExample", TRACK_TYPE.ISOFORM_AND_VARIANT, false);
   //createCoVExample("NC_045512.2:17894..28259", "SARS-CoV-2", "covidExample1", TRACK_TYPE.ISOFORM, false);
   //createHTPExample("X:2023822..2042311", "fly", "viewerActnHTPFly", TRACK_TYPE.ISOFORM, false,[],'Actn','X:2037135');
